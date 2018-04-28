@@ -1,0 +1,17 @@
+gppLibrary
+gppLibrary.cluster
+gppLibrary.cluster.connectors
+gppLibrary.connectors.reducers
+gppLibrary.connectors.spreaders
+gppLibrary.functionals.composites
+gppLibrary.functionals.evolutionary
+gppLibrary.functionals.evolutionary.cluster
+gppLibrary.functionals.groups
+gppLibrary.functionals.matrix
+gppLibrary.functionals.pipelines
+gppLibrary.functionals.transformers
+gppLibrary.functionals.workers
+gppLibrary.mapReduce
+gppLibrary.patterns
+gppLibrary.terminals
+gppLibrary.terminals.GUIsupport

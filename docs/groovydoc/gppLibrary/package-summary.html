@@ -1,0 +1,320 @@
+<!--
+
+     Licensed to the Apache Software Foundation (ASF) under one
+     or more contributor license agreements.  See the NOTICE file
+     distributed with this work for additional information
+     regarding copyright ownership.  The ASF licenses this file
+     to you under the Apache License, Version 2.0 (the
+     "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing,
+     software distributed under the License is distributed on an
+     "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+     specific language governing permissions and limitations
+     under the License.
+
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>gppLibrary (gppLibrary 1.0.0-alpha-1 API)</title>
+<meta name="keywords" content="gppLibrary package">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel ="stylesheet" TYPE="text/css" HREF="../stylesheet.css" title="Style">
+<link href="../groovy.ico" type="image/x-icon" rel="shortcut icon">
+<link href="../groovy.ico" type="image/x-icon" rel="icon">
+<script type="text/javascript">
+function windowTitle()
+{
+    parent.document.title="gppLibrary (gppLibrary 1.0.0-alpha-1 API)";
+}
+</script>
+<noscript>
+</noscript>
+
+</head>
+
+<body class="center" onload="windowTitle();">
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+    <!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+    <!--   -->
+</a>
+<a name="navbar_top_firstrow"><!-- --></a>
+<ul class="navList" title="Navigation">
+    <li><a href="../overview-summary.html">Overview</a></li>
+    <li class="navBarCell1Rev">Package</li>
+    <li>Class</li>
+    <li><a href="../deprecated-list.html">Deprecated</a></li>
+    <li><a href="../index-all.html">Index</a></li>
+    <li><a href="../help-doc.html">Help</a></li>
+</ul>
+</div>
+
+<div class="subNav">
+    <ul class="navList">
+        <li><a href="../index.html?gppLibrary/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="package-summary.html" target="_top">No Frames</a></li>
+    </ul>
+</div>
+
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<div class="header">
+    <h1 class="title">Package gppLibrary</h1>
+</div>
+
+
+<h2 title="Package gppLibrary Description" class="title">Package gppLibrary Description</h2>
+<div class="header">
+ Groovy Parallel Patterns.<p>
+
+ A Library to Support Parallel Programming using<br>
+ Communicating Sequential Processes CAR Hoare CACM 1978,<br>
+ the JCSP Library, Peter Welch, University of Kent and<br>
+ Groovy Helper Classes to Support JCSP, Jon Kerridge, Edinburgh Napier University.<p>
+
+ Package gppLibrary defines some basic classes and interfaces used by the rest of the library.<p>
+
+ All user defined data classes utilising the library should extend DataClass.<p>
+
+ In addition, a number of methods are required, depending upon the use of the class.
+ These are described more fully in the information in the packages; terminals, workers and transformers.  A list
+ of the required methods follows: <br>
+ initClass([initialData]) used to initialise an object<br>
+ createInstance([createData]) used to create an instance of the class<br>
+ finalise([finaliseData]) used to undertake final operations on an object<br>
+ collector() used to collect and save results<br>
+ function([dataModifier, wc]) carries out a function on an object using an optional local worker class wc<p>
+
+ More specialised methods are required for more specific tasks: <br>
+ updateDisplayList( ) used to update the data structure used in a graphical user interface in CollectUI<br>
+ feedbackBool() used to send a boolean value to a previous process<br>
+ feedbackObject() used to send an object instance to a previous process<p>
+
+  
+
+</div>
+
+
+<div class="contentContainer">
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Interface Summary">
+                    <caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Interface</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="DataClassInterface.html" title="class in gppLibrary">
+                                    DataClassInterface
+                                </a></strong>
+                            </td>
+                            <td>The DataClassInterface defines the clone and  serialize methods required by the Groovy Parallel
+ Patterns library for any data class that is to be manipulated by all the processes
+ within the library.  </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Class Summary">
+                    <caption><span>Class Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Class</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="CompositeDetails.html" title="class in gppLibrary">
+                                    CompositeDetails
+                                </a></strong>
+                            </td>
+                            <td>CompositeDetails is used to define the workers and stages of the skeletons appearing in the
+ gppLibrary.functionals.composites package.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="DataClass.html" title="class in gppLibrary">
+                                    DataClass
+                                </a></strong>
+                            </td>
+                            <td>DataClass provides the super class for all data classes used in gpp, it provides
+ a null implementation of all the abstract methods defined in DataClassInterface,
+ thus  all data classes used in gpp should extend DataClass, overriding the methods required for that
+ data class only.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="DataDetails.html" title="class in gppLibrary">
+                                    DataDetails
+                                </a></strong>
+                            </td>
+                            <td>DataDetails contains data pertaining to a data class used in all of the processes.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="FeedbackDetails.html" title="class in gppLibrary">
+                                    FeedbackDetails
+                                </a></strong>
+                            </td>
+                            <td>FeedbackDetails is used to create a feedback object, that is either a simple boolean value
+ or more complex object as defined by the method fMethod.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="GroupDetails.html" title="class in gppLibrary">
+                                    GroupDetails
+                                </a></strong>
+                            </td>
+                            <td>GroupDetails holds details for each of the workers in a Group process.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="LocalDetails.html" title="class in gppLibrary">
+                                    LocalDetails
+                                </a></strong>
+                            </td>
+                            <td>LocalDetails contains data pertaining to a local class used in many of the processes.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="Logger.html" title="class in gppLibrary">
+                                    Logger
+                                </a></strong>
+                            </td>
+                            <td>The Logger class provides a number of static methods that are used internally,
+ within other processes, that cause the recording of timing
+ data pertaining to the input and output communications associated with that process.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="PipelineDetails.html" title="class in gppLibrary">
+                                    PipelineDetails
+                                </a></strong>
+                            </td>
+                            <td>PipelineDetails holds details for each stage in a Pipeline process.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="ResultDetails.html" title="class in gppLibrary">
+                                    ResultDetails
+                                </a></strong>
+                            </td>
+                            <td>ResultDetails contains data pertaining to a result class used in Collect processes.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="UniversalRequest.html" title="class in gppLibrary">
+                                    UniversalRequest
+                                </a></strong>
+                            </td>
+                            <td></td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="UniversalResponse.html" title="class in gppLibrary">
+                                    UniversalResponse
+                                </a></strong>
+                            </td>
+                            <td></td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="UniversalSeparator.html" title="class in gppLibrary">
+                                    UniversalSeparator
+                                </a></strong>
+                            </td>
+                            <td>An object sent from one to process to another used as a signal to the receiving
+ process that it should undertake some operation for the sending process.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="UniversalSignal.html" title="class in gppLibrary">
+                                    UniversalSignal
+                                </a></strong>
+                            </td>
+                            <td>An object sent from one to process to another used as a signal to the receiving
+ process that it should undertake some operation for the sending process.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="UniversalTerminator.html" title="class in gppLibrary">
+                                    UniversalTerminator
+                                </a></strong>
+                            </td>
+                            <td>An object sent from one process to another indicating that the end of
+ emitted data objects has been reached.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+
+
+
+</div>
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+    <!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+    <!--   -->
+</a>
+    <ul class="navList" title="Navigation">
+        <li><a href="overview-summary.html">Overview</a></li>
+        <li class="navBarCell1Rev">Package</li>
+        <li>Class</li>
+        <li><a href="deprecated-list.html">Deprecated</a></li>
+        <li><a href="index-all.html">Index</a></li>
+        <li><a href="help-doc.html">Help</a></li>
+    </ul>
+</div>
+<div class="subNav">
+    <div>
+        <ul class="navList">
+            <li><a href="index.html?deprecated-list.html" target="_top">Frames</a></li>
+            <li><a href="deprecated-list.html" target="_top">No Frames</a></li>
+        </ul>
+    </div>
+
+    <div class="aboutLanguage"><em>Groovy Documentation</em></div>
+    <a name="skip-navbar_bottom">
+        <!--   -->
+    </a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+</body>
+</html>
