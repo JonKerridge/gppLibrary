@@ -41,7 +41,8 @@ class CombineNto1 extends DataClass implements CSProcess {
 	List dataModifier = null		// is this required???
 
     String logPhaseName = ""
-    String logPropertyName = ""
+    String inputLogPropertyName = ""     // two property names required to refer to input and output objects
+    String outputLogPropertyName = ""
 
     @CompileStatic
     void runMethod(){
@@ -102,14 +103,14 @@ class CombineNto1 extends DataClass implements CSProcess {
     				running = false
     			}
     			else {
-                    logPhase << Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    logPhase << Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
                     returnCode = callUserMethod(localClass, combineMethod, inputObject, 18)
                     // does this need data modifier as well???? if so
     			}
     		}
             returnCode = callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
     		output.write(outputObject)
-            logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+            logPhase << Logger.outputEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
 
             // now write the terminating UT that was read previously with log data appended
             logPhase << Logger.endEvent(logPhaseName, timer.read())

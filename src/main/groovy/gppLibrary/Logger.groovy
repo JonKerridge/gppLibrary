@@ -27,31 +27,31 @@ class Logger implements Cloneable, Serializable {
 	static int workEndTag = 6
 
 	static List startLog(String logID, long time) {
-		return [startTag, logID, time, " "]
+		return [time, startTag, logID, " "]
 	}
 
 	static List initLog(String logID, long time) {
-		return [initTag, logID, time, " "]
+		return [time, initTag, logID, " "]
 	}
 
 	static List inputEvent(String logID, long time, Object o) {
-		return [inputTag, logID, time, o]
+		return [time, inputTag, logID, o]
 	}
 
 	static List outputEvent(String logID, long time, Object o) {
-		return [outputTag, logID, time, o]
+		return [time, outputTag, logID, o]
 	}
 
 	static List endEvent(String logID, long time) {
-		return [endTag, logID, time, " "]
+		return [time, endTag, logID, " "]
 	}
 
 	static List workStartEvent(String logID, long time) {
-		return [workStartTag, logID, time, " "]
+		return [time, workStartTag, logID, " "]
 	}
 
 	static List workEndEvent(String logID, long time) {
-		return [workEndTag, logID, time, " "]
+		return [time, workEndTag, logID, " "]
 	}
 
 	static void produceLog ( List log, String logFileName ){
