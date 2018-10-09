@@ -27,6 +27,15 @@ import jcsp.lang.*
  * @param localDetails A {@link gppLibrary.LocalDetails} object that specifies the details of a local class
  * @param outDetails A {@link gppLibrary.LocalDetails} object that defines the single output object that results from this process.
  * @param combineMethod A String specifying the name of the operation to be undertaken that combine input data objects into the local worker class
+ * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
+ * otherwise the process will not be logged
+ * @param inputLogPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * inputLogPropertyName must be specified if logPhaseName is specified
+ * @param outputLogPropertyName the name of a property in the output object that will uniquely identify an instance of the object.
+ * outputLogPropertyName must be specified if logPhaseName is specified
+ *
+ *  log properties modified and added in version 1.0.0-alpha-4
+ *
  *
  * <p>
  *

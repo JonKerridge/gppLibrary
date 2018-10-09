@@ -9,7 +9,7 @@ import jcsp.lang.ChannelInput
 import jcsp.lang.ChannelOutput
 
 /**
- * ListFaMergeOne is used to connect many source processes to one destination process such that
+ * ListMergeOne is used to connect many source processes to one destination process such that
  * any incoming data object will be written to the next process using the output channel.  The inputList
  * is processed in a sequential manner such that all active inputs are given equal access to the
  * output bandwidth in the order of the inputList index.
@@ -18,6 +18,8 @@ import jcsp.lang.ChannelOutput
  * UniversalTerminator object will be read from all the  source processes.
  * The process will then output a single UniversalTerminator object.
  * The incoming data is not modified in any manner.
+ *
+ * This was added in version 1.0.0-alpha-4 and the required change in gppBuilder
  * <p>
  *
  * <pre>

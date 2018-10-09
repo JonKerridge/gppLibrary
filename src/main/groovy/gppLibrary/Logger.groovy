@@ -13,7 +13,7 @@ import groovy.transform.CompileStatic
  * The log data is output as part of a Collect process.  It can either be printed direct to the console,
  * showing elapsed timings.
  * If a  logFileName property is specified then the log data will be written to a file as text values,
- * simply as the content of each tagged log message, space separated, each on a separate line.
+ * simply as the content of each tagged log message, comma separated, each on a separate line.
  * Time values are output as the long representation of system millisecond time
  */
 @CompileStatic
