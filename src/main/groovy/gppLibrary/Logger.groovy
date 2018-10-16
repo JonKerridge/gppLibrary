@@ -1,6 +1,7 @@
 package gppLibrary
 
 import groovy.transform.CompileStatic
+import jcsp.lang.ChannelOutput
 
 /**
  * The Logger class provides a number of static methods that are used internally,
@@ -10,11 +11,12 @@ import groovy.transform.CompileStatic
  * Processes can be optionally logged simply by specifying a string property logPhaseName and the
  * associated name of a property within the object being processed that uniquely identifies the object instance.
  *
- * The log data is output as part of a Collect process.  It can either be printed direct to the console,
- * showing elapsed timings.
- * If a  logFileName property is specified then the log data will be written to a file as text values,
+ * The log data is output as part of a Collect process.
+ * The logFileName property must be specified and the log data will be written to a file as text values,
  * simply as the content of each tagged log message, comma separated, each on a separate line.
  * Time values are output as the long representation of system millisecond time
+ * The property logChan holds a channel that can be used to output log data directly to a
+ * LoggingVisualiser process.
  */
 @CompileStatic
 class Logger implements Cloneable, Serializable {
@@ -25,113 +27,69 @@ class Logger implements Cloneable, Serializable {
 	static int endTag = 4
 	static int workStartTag = 5
 	static int workEndTag = 6
+    static ChannelOutput logChan = null
+
+/**
+ * initLogChannel is used to initialise the logging channel, if used
+ * @param loggingChan the any2one logging channel output connecting processes to the LoggingVisualiser
+ */
+    static void initLogChannel (ChannelOutput loggingChan){
+        logChan = loggingChan
+    }
 
 	static List startLog(String logID, long time) {
-		return [time, startTag, logID, " "]
+        List logData = [time, startTag, logID, " "]
+        if (logChan != null) logChan.write(logData)
+		return logData
 	}
 
 	static List initLog(String logID, long time) {
-		return [time, initTag, logID, " "]
+        List logData = [time, initTag, logID, " "]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static List inputEvent(String logID, long time, Object o) {
-		return [time, inputTag, logID, o]
+        List logData = [time, inputTag, logID, o]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static List outputEvent(String logID, long time, Object o) {
-		return [time, outputTag, logID, o]
+        List logData = [time, outputTag, logID, o]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static List endEvent(String logID, long time) {
-		return [time, endTag, logID, " "]
+        List logData = [time, endTag, logID, " "]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static List workStartEvent(String logID, long time) {
-		return [time, workStartTag, logID, " "]
+        List logData = [time, workStartTag, logID, " "]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static List workEndEvent(String logID, long time) {
-		return [time, workEndTag, logID, " "]
+        List logData = [time, workEndTag, logID, " "]
+        if (logChan != null) logChan.write(logData)
+        return logData
 	}
 
 	static void produceLog ( List log, String logFileName ){
-		if (logFileName == ""){
-			log.each { phase ->
-				println " "
-				phase.each{ List entry ->
-					switch (entry[0]){
-							case 0: // start
-								print "START "
-								break
-							case 1: // init
-								print "\tINIT "
-								break
-							case 2:  // input
-								print "\tIN "
-								break
-							case 3: // output
-								print "\tOUT "
-								break
-							case 4: //end
-								print "END "
-								break
-							case 5 : //workStart
-								print "\t\t\tWORK START "
-								break
-							case 6 : //workEnd
-								print "\t\t\tWORK END "
-								break
-					}
-					println "${entry[1]}, ${entry[2]}, ${entry[3]}"
-				}
-			}
-		}
-		else {
-			//TODO convert to new format
-			
-			// the log should be written to a file
-			def file = new File(logFileName + "log.txt")
-			if (file.exists()) file.delete()
-			file.withPrintWriter { writer ->
-//				long initTime
-//				long startTime = 0
-//				long workStartTime = 0
-				log.each { phase ->
-					phase.each{ List entry ->
-						writer.println "${entry[0]}, ${entry[1]}, ${entry[2]}, ${entry[3]}"
-//						switch (entry[0]){
-//								case 1: // init
-//									initTime = entry[2]
-//									writer.println "${entry[0]} ${entry[1]} ${entry[2]}"
-//									break
-//								case 2:  // input
-//									startTime = (long)entry[2] - initTime
-//									writer.println "${entry[0]} ${entry[1]} ${entry[2]} $startTime"
-//									break
-//								case 3: // output
-//									long endTime = (long)entry[2] - initTime
-//									writer.println "${entry[0]} ${entry[1]} ${entry[2]} $endTime ${endTime -startTime}"
-//									startTime = endTime
-//									break
-//								case 4: //end
-//									writer.println "${entry[0]} ${entry[1]} ${(long)entry[1] - initTime}"
-//									break
-//								case 5 : //workStart
-//									workStartTime = (long)entry[1] - initTime
-//									writer.println "${entry[0]} ${entry[1]} $workStartTime"
-////									println "\t\t\tWORK START at ${entry[1]} at $workStartTime\n"
-//									break
-//								case 6 : //workEnd
-//									long endTime = (long)entry[1] - initTime
-//									writer.println "${entry[0]} ${entry[1]} ${(long)entry[1] - initTime} ${endTime - workStartTime}"
-////									println "\t\t\tWORK END ${entry[1]} at $endTime uses ${endTime - workStartTime}\n"
-//									break
-//
-//						} // switch
-					}//phase
-				} //log
-			} // with printWriter
-		} // end if
+		assert logFileName != "" : "LogFileName must be specified"
+        def file = new File(logFileName + "log.csv")
+        if (file.exists()) file.delete()
+        file.withPrintWriter { writer ->
+            log.each { phase ->
+                phase.each{ List entry ->
+                    writer.println "${entry[0]}, ${entry[1]}, ${entry[2]}, ${entry[3]}"
+                }//phase
+            } //log
+		} // end file
 	} // produceLog
 
 }

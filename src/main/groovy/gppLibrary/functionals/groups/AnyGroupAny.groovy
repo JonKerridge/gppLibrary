@@ -34,7 +34,7 @@ import jcsp.lang.*
  * LogPropertyName must be specified if logPhaseName is specified 
  * 
  * @see jcsp.lang.Barrier
- * @see gpp.functionals.workers.WorkerTerminating
+ * @see gppLibrary.functionals.workers.Worker
  */
 
 @CompileStatic

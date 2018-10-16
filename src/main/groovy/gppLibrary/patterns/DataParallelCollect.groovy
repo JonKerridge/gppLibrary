@@ -32,7 +32,7 @@ import jcsp.lang.*
  * @param outData If true the process will output each processed input object. If false the process will output
  * 				  the workerClass once only, after it has processed all the input data objects. The output
  *                only happens after the finalise method has been called. outData defaults to true.
- * @see gpp.functionals.workers.WorkerTerminating
+ * @see gppLibrary.functionals.workers.Worker
  * <p>
  *
 */

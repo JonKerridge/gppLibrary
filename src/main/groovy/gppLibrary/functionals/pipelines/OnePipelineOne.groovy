@@ -38,7 +38,7 @@ import jcsp.lang.*
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.  
  * LogPropertyName must be specified if logPhaseName is specified 
  *           
- * @see gpp.functionals.workers.Worker
+ * @see gppLibrary.functionals.workers.Worker
  * @see jcsp.lang.Barrier					
  */
 class OnePipelineOne implements CSProcess{

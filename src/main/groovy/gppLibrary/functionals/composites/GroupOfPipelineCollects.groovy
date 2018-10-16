@@ -29,9 +29,13 @@ import jcsp.lang.*
  * be an empty string
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
  * LogPropertyName must be specified if logPhaseName is specified
- * @param logFileName is a string value specifying that the log output should be written to a file rather than the console.
- * The filename string should contain the full pathe name.  The suffix.log will be added to the file name.  Each log file in
+ * @param logFileName is a string value specifying the file name the log output should be written to .
+ * The filename string should contain the full path name.  The suffix log.csv will be added to the file name.  Each log file in
  * the group will be identified by its index.
+ * @param visLogChan the output end of an any2one channel to which log data will be sent to an instance of the LoggingVisualiser
+ * process running in parallel with the application network.  If not specified then it is assumed that no visualiser process is running.
+ *
+ * @see gppLibrary.functionals.pipelines.OnePipelineCollect
  */
 @CompileStatic
 class GroupOfPipelineCollects implements CSProcess {
@@ -47,6 +51,7 @@ class GroupOfPipelineCollects implements CSProcess {
     List <String> logPhaseNames = null
 	String logPropertyName = ""
 	String logFileName = ""
+	ChannelOutput visLogChan = null
 
 	void run() {
         int rSize = rDetails.size()
@@ -89,7 +94,8 @@ class GroupOfPipelineCollects implements CSProcess {
                                 outData: outData[g],
 								logPhaseNames: logPhaseNames == null ?  logNames[0] : (List) logNames[g],
 								logPropertyName: logPropertyName,
-								logFileName: logFileName == "" ? "" : logFileName + "$g")
+								logFileName: logFileName == "" ? "" : logFileName + "$g",
+                                visLogChan: visLogChan)
 		}
 		new PAR (network).run()
 	}

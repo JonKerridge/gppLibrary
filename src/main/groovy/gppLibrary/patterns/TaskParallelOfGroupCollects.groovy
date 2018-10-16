@@ -30,7 +30,7 @@ import jcsp.lang.*
  * @param outData A List of booleans. If true the stage with the same index will output each processed input object. If false the stage will output
  * 				  the workerClass once only, after it has processed all the input data objects. The output
  *                only happens after the finalise method has been called. outData defaults to [true, ... true]
- * @see gpp.functionals.workers.WorkerTerminating
+ * @see gppLibrary.functionals.workers.Worker
  * <p>
  *
 */

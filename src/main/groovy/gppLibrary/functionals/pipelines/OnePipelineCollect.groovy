@@ -47,8 +47,8 @@ import jcsp.lang.*
  * @param logFileName is a string value specifying that the log output should be written to a file rather than the console.  
  * The filename string should contain the full path name.  The suffix.log will be added to the file name.
  *           
- * @see gpp.terminals.Collect
- * @see gpp.functionals.workers.WorkerTerminating
+ * @see gppLibrary.terminals.Collect
+ * @see gppLibrary.functionals.workers.Worker
  */
 
 @CompileStatic
@@ -65,6 +65,7 @@ class OnePipelineCollect implements CSProcess{
     List <String> logPhaseNames = null
     String logPropertyName = ""
     String logFileName = ""
+    ChannelOutput visLogChan = null
 
     void run() {
         assert (stages >= 2): "OnePipelineCollect: insufficient worker stages $stages should be >=2"
@@ -99,7 +100,8 @@ class OnePipelineCollect implements CSProcess{
         }
         def collectStage = new Collect( input: interConnect[stages - 1].in(),
                                         rDetails: rDetails,
-                                        logFileName: logFileName )
+                                        logFileName: logFileName,
+                                        visLogChan: visLogChan)
         stageProcesses << firstStage
         stageProcesses << collectStage
         new PAR(stageProcesses).run()

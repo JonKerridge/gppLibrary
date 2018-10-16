@@ -37,7 +37,7 @@ import jcsp.lang.ChannelOutput
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.  
  * LogPropertyName must be specified if logPhaseName is specified 
  * 
- * @see gpp.functionals.workers.WorkerTerminating
+ * @see gppLibrary.functionals.workers.Worker
  */
 @CompileStatic
 class ListGroupAny implements CSProcess{

@@ -43,7 +43,6 @@ import jcsp.lang.ChannelOutput
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
  * LogPropertyName must be specified if logPhaseName is specified
  *
- *
  */
 class ThreePhaseWorker extends DataClass implements CSProcess {
 

@@ -1,20 +1,33 @@
 package gppLibrary
 
+import groovy.transform.CompileStatic
 import jcsp.lang.CSProcess
 import jcsp.lang.ChannelInput
 
+/**
+ *
+ */
+
 class LoggingVisualiser implements CSProcess {
     ChannelInput logInput
-    boolean running = true
-    List logEntry
+    int collectors      // the number of parallel Collector processes in the network
 
+
+
+    @CompileStatic
     void run(){
-       while (running) {
+        boolean running
+        def logEntry
+        int terminated
+        terminated = 0
+        running = true
+        while (running) {
            logEntry = logInput.read()
            if (logEntry instanceof UniversalTerminator)
-               running = false
+               terminated += 1
            else
-               println "${logEntry[0]}, ${logEntry[1]}, ${logEntry[2]}, ${logEntry[3]}"
+               println "${((List)logEntry)[0]}, ${((List)logEntry)[1]}, ${((List)logEntry)[2]}, ${((List)logEntry)[3]}"
+           if (collectors == terminated ) running = false
        }
     }
 }
