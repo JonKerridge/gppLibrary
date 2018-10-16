@@ -28,6 +28,8 @@ import jcsp.lang.ChannelOutput
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
  * LogPropertyName must be specified if logPhaseName is specified
  *
+ *
+ * @see gppLibrary.functionals.workers.ThreePhaseWorker
  */
 
 
@@ -44,7 +46,7 @@ class ListThreePhaseWorkerList implements CSProcess {
 
 	String logPhaseName = ""
 	String logPropertyName = ""
-	
+
 	void run(){
 		assert (inputList.size() == outputList.size()) : "ListThreePhaseWorkerList: inputList and outputList must be same size"
 		List network = (0 ..< workers).collect { e ->

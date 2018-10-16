@@ -5,7 +5,6 @@ import gppLibrary.LocalDetails
 import gppLibrary.Logger
 import gppLibrary.UniversalTerminator
 import groovy.transform.CompileStatic
-import groovyJCSP.*
 import jcsp.lang.*
 
 /**

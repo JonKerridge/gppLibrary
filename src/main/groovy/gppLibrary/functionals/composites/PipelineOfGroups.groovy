@@ -43,10 +43,10 @@ import jcsp.lang.*
  * be an empty string
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
  * LogPropertyName must be specified if logPhaseName is specified
- * @see gpp.functionals.groups.AnyGroupList
- * @see gpp.functionals.groups.ListGroupCollect
- * @see gpp.functionals.groups.ListGroupList
- * @see gpp.functionals.workers.Worker
+ * @see gppLibrary.functionals.groups.AnyGroupList
+ * @see gppLibrary.functionals.groups.ListGroupCollect
+ * @see gppLibrary.functionals.groups.ListGroupList
+ * @see gppLibrary.functionals.workers.Worker
  * <p>
  *
 */

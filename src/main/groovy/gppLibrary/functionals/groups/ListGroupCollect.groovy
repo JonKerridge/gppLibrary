@@ -7,6 +7,7 @@ import groovyJCSP.ChannelInputList
 import groovyJCSP.PAR
 import jcsp.lang.CSProcess
 import jcsp.lang.ChannelInput
+import jcsp.lang.ChannelOutput
 
 /**
  *
@@ -30,9 +31,12 @@ import jcsp.lang.ChannelInput
  * The filename string should contain the full pathe name.  The suffix.log will be added to the file name.  Each log file in
  * the group will be identified by its index.
  *
+ * @param visLogChan the output end of an any2one channel to which log data will be sent to an instance of the LoggingVisualiser
+ * process running in parallel with the application network.  If not specified then it is assumed that no visualiser process is running.
  *
  *
- * @see gpp.terminals.Collect
+ *
+ * @see gppLibrary.terminals.Collect
  */
 
 @CompileStatic
@@ -43,6 +47,7 @@ class ListGroupCollect implements CSProcess{
 	int workers
 
 	String logFileName = ""
+	ChannelOutput visLogChan = null
 
 	void run() {
         int inSize = inputList.size()
@@ -52,7 +57,8 @@ class ListGroupCollect implements CSProcess{
 		List network = (0 ..< workers).collect { e ->
 			new Collect ( input: (ChannelInput)inputList[e],
 						  rDetails: rDetails[e],
-						  logFileName: logFileName == "" ? "" : logFileName + "$e")
+						  logFileName: logFileName == "" ? "" : logFileName + "$e",
+			 			  visLogChan: visLogChan)
 		}
 		new PAR (network).run()
 
