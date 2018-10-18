@@ -20,23 +20,23 @@ import jcsp.lang.ChannelOutput
  */
 @CompileStatic
 class Logger implements Cloneable, Serializable {
-	static int startTag = 0
-	static int initTag = 1
-	static int inputTag = 2
-	static int outputTag = 3
-	static int endTag = 4
-	static int workStartTag = 5
-	static int workEndTag = 6
+    static int startTag = 0
+    static int initTag = 1
+    static int inputTag = 2
+    static int outputTag = 3
+    static int endTag = 4
+    static int workStartTag = 5
+    static int workEndTag = 6
     static ChannelOutput logChan = null
 
 /**
  * initLogChannel is used to initialise the logging channel, if used
- * @param loggingChan the any2one logging channel output connecting processes to the LoggingVisualiser
+ * @param logChan the any2one logging channel output connecting processes to the LoggingVisualiser
  */
-    static void initLogChannel (ChannelOutput loggingChan){
+    static void initLogChannel(ChannelOutput loggingChan) {
         logChan = loggingChan
     }
-
+/*
 	static List startLog(String logID, long time) {
         List logData = [time, startTag, logID, " "]
         if (logChan != null) logChan.write(logData)
@@ -91,5 +91,76 @@ class Logger implements Cloneable, Serializable {
             } //log
 		} // end file
 	} // produceLog
+*/
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ */
+
+    static void startLog(String logID, long time) {
+        logChan.write([time, startTag, logID, " "])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ */
+
+    static void initLog(String logID, long time) {
+        logChan.write([time, initTag, logID, " "])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ * @param o the property value being tracked
+ */
+    static void inputEvent(String logID, long time, Object o) {
+        logChan.write([time, inputTag, logID, o])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ * @param o the property value being tracked
+ */
+    static void outputEvent(String logID, long time, Object o) {
+        logChan.write([time, outputTag, logID, o])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ */
+
+    static void endEvent(String logID, long time) {
+        logChan.write([time, endTag, logID, " "])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ */
+
+    static void workStartEvent(String logID, long time) {
+        logChan.write([time, workStartTag, logID, " "])
+    }
+
+/**
+ *
+ * @param logID the name of the log phase
+ * @param time millisecond time tag generated
+ */
+
+    static void workEndEvent(String logID, long time) {
+        logChan.write([time, workEndTag, logID, " "])
+    }
+
 
 }

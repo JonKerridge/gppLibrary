@@ -90,8 +90,8 @@ class CombineNto1 extends DataClass implements CSProcess {
         }
         else { // logging
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.startLog(logPhaseName, timer.read())
+
+            Logger.startLog(logPhaseName, timer.read())
 
     		int returnCode = -1
     		Class lClass = Class.forName(localDetails.lName)
@@ -104,7 +104,7 @@ class CombineNto1 extends DataClass implements CSProcess {
 
     		boolean running = true
     		Object inputObject = new Object()
-			logPhase << Logger.initLog(logPhaseName, timer.read())
+			Logger.initLog(logPhaseName, timer.read())
 			
     		while (running){
     			inputObject = input.read()
@@ -112,18 +112,18 @@ class CombineNto1 extends DataClass implements CSProcess {
     				running = false
     			}
     			else {
-                    logPhase << Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
+                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
                     returnCode = callUserMethod(localClass, combineMethod, inputObject, 18)
                     // does this need data modifier as well???? if so
     			}
     		}
             returnCode = callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
     		output.write(outputObject)
-            logPhase << Logger.outputEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
+            Logger.outputEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
 
             // now write the terminating UT that was read previously with log data appended
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
-            inputObject.log << logPhase
+            Logger.endEvent(logPhaseName, timer.read())
+
             output.write(inputObject)
         }
 	}

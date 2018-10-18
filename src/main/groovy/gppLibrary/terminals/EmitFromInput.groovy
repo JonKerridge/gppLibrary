@@ -66,8 +66,8 @@ class EmitFromInput extends DataClass implements CSProcess {
         }
         else {
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.startLog(logPhaseName, timer.read())
+
+            Logger.startLog(logPhaseName, timer.read())
 
             int returnCode = -1
     		Class LocalClass = Class.forName(eDetails.lName)
@@ -79,21 +79,20 @@ class EmitFromInput extends DataClass implements CSProcess {
 //            lcInit.&"${eDetails.lInitMethod}"(eDetails.lInitData)
     		boolean running = true
 
-            logPhase << Logger.initLog(logPhaseName, timer.read())
+            Logger.initLog(logPhaseName, timer.read())
 
     		while (running){
     			Object lc = LocalClass.newInstance()
                 returnCode = callUserMethod(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
                 if ( returnCode == DataClassInterface.normalContinuation){
                     output.write(lc)
-                    logPhase << Logger.outputEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
+                    Logger.outputEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
                 }
                 else
                     running = false
     		}
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
+            Logger.endEvent(logPhaseName, timer.read())
     		UniversalTerminator ut = input.read()	// terminator from previous process
-            ut.log << logPhase
     		output.write(ut)
         }
 	}

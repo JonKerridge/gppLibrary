@@ -26,9 +26,11 @@ import jcsp.lang.ChannelOutput
  * @param rDetails A {@link gppLibrary.ResultDetails} object defining the same result class used by each Collect process in the group
  * @param collectors The number of Collect processes that will be created when the Group is run
  *
- * @param logFileName is a string value specifying that the log output should be written to a file rather than the console.
- * The filename string should contain the full pathe name.  The suffix.log will be added to the file name.  Each log file in
- * the group will be identified by its index.
+ * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
+ * otherwise the process will not be logged
+ * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * LogPropertyName must be specified if logPhaseName is specified
+ *
  *
  * @param visLogChan the output end of an any2one channel to which log data will be sent to an instance of the LoggingVisualiser
  * process running in parallel with the application network.  If not specified then it is assumed that no visualiser process is running.
@@ -45,14 +47,16 @@ class AnyGroupCollect implements CSProcess{
 	ResultDetails rDetails
 	int collectors
 
-	String logFileName = ""
+	String logPhaseName = ""
+	String logPropertyName = ""
 	ChannelOutput visLogChan = null
 
 	void run() {
 		List network = (0 ..< collectors).collect { e ->
 			new Collect ( input: inputAny,
 						  rDetails: rDetails,
-						  logFileName: logFileName == "" ? "" : logFileName + "$e",
+						  logPhaseName: logPhaseName == "" ? "" : logPhaseName + "$e",
+					      logPropertyName: logPropertyName,
 						  visLogChan: visLogChan)
 		}
 		new PAR (network).run()

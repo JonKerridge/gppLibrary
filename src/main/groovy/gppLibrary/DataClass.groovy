@@ -155,7 +155,7 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
 
 
 	/**
-	 * A null implementation of {@link gppLibrary.DataClassInterface#Serialise}
+	 * A null implementation of {@link gppLibrary.DataClassInterface#serialize}
 	 *
 	 * @usage o.Serialize(), where o is the non-Serializable object
 	 * @return the Serializable version of o

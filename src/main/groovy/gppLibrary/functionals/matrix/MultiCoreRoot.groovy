@@ -86,8 +86,10 @@ class MultiCoreRoot implements CSProcess {
 		assert partitionMethod != "" : "MultiCoreRoot: partitionMethod must be specified"
 		assert updateMethod != "" : "MultiCoreRoot: updateMethod must be specified"
 
-        boolean running = true
-        Object data = new Object()
+        boolean running
+        running = true
+        Object data
+        data = new Object()
 
         if (logPhaseName == "") { //not logging
             runMethod()
@@ -95,17 +97,17 @@ class MultiCoreRoot implements CSProcess {
         
         else { // logging
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.initLog(logPhaseName, timer.read())
+
+            Logger.initLog(logPhaseName, timer.read())
 
             while (running) {
                 data = input.read()
                 if ( data instanceof UniversalTerminator)
                     running = false
                 else {  // process a new data set
-                    logPhase << Logger.inputEvent(data.getProperty(logPropertyName), timer.read())
+                    Logger.inputEvent(data.getProperty(logPropertyName), timer.read())
                     data.&"$partitionMethod"(nodes)
-                    logPhase << Logger.workStartEvent(timer.read())
+                    Logger.workStartEvent(timer.read())
                     for ( i in 0 ..< nodes) toNodes[i].write(data)
 //                    println "sent data to nodes"
                     for ( i in 0 ..< nodes) fromNodes.read()
@@ -121,7 +123,8 @@ class MultiCoreRoot implements CSProcess {
                     else { // looping until errorMargin is satisfed
 //                        println "error looping"
                         iterations = 0
-                        boolean iterating = true
+                        boolean iterating
+                        iterating = true
                         while (iterating) {
                             iterations += 1
                             for ( i in 0 ..< nodes) toNodes[i].write(new UniversalSignal())
@@ -134,7 +137,7 @@ class MultiCoreRoot implements CSProcess {
                             if ( !finalOut) output.write(data)
                         }
                     } // iterate or loop until differences less than errorMargin
-                    logPhase << Logger.workEndEvent(timer.read())
+                    Logger.workEndEvent(timer.read())
                     // send final result
 //                    println "result ${data.M.getByColumn(data.n + 1)}"
                     output.write(data)
@@ -142,17 +145,15 @@ class MultiCoreRoot implements CSProcess {
                     for ( i in 0 ..< nodes) toNodes[i].write(new UniversalSeparator())
 //                    println "sent USep to nodes"
                     for ( i in 0 ..< nodes) fromNodes.read()
-                    logPhase << Logger.outputEvent(data.getProperty(logPropertyName), timer.read())
+                    Logger.outputEvent(data.getProperty(logPropertyName), timer.read())
 //                    println "received USep acknowledgements"
                 } // processed data set
             } // running
             // deal with termination; first the nodes
             for ( i in 0 ..< nodes) toNodes[i].write(new UniversalTerminator())
             for ( i in 0 ..< nodes) {
-                def nodeLog = fromNodes.read()
-                data.log <<  nodeLog // get logPhase from each node
+                def ended = fromNodes.read()
             }
-            data.log << logPhase
             output.write(data)  // data contains a UniversalTerminator
         } // logging
 	}// run

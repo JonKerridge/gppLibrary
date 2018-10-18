@@ -25,8 +25,11 @@ import jcsp.lang.*
  * 	<p>
  * @param input The one2one input channel used to receive results
  * @param rDetails A ResultDetails object containing data pertaining to result class used by the Collect process, it MUST be specified.
- * @param logFileName is a string value specifying the file name to which the log output should be written.
- * The filename string should contain the full path name.  The suffix log.txt will be added to the file name.
+ * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
+ * otherwise the process will not be logged
+ * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * LogPropertyName must be specified if logPhaseName is specified
+ *
  * @param visLogChan the output end of an any2one channel to which log data will be sent to an instance of the LoggingVisualiser
  * process running in parallel with the application network.  If not specified then it is assumed that no visualiser process is running.
  *
@@ -40,7 +43,8 @@ class Collect extends DataClass implements CSProcess {
 	ResultDetails rDetails
 	int collected = 0
 
-	String logFileName = ""
+    String logPhaseName = ""
+    String logPropertyName = ""
     ChannelOutput visLogChan = null
     Object inputObject = null
 
@@ -49,33 +53,43 @@ class Collect extends DataClass implements CSProcess {
     void runMethod() {
         Class resultsClass = Class.forName(rDetails.rName)
         def rc = resultsClass.newInstance()
-        inputObject = input.read()
         int returnCode //= -1
         returnCode = callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
-//      returnCode = rc.&"${rDetails.rInitMethod}"( rDetails.rInitData )
+        inputObject = input.read()
         while (!(inputObject instanceof UniversalTerminator)){
             collected += 1
             returnCode = callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
-//          returnCode = rc.&"${rDetails.rCollectMethod}"( inputObject )
-//          if (returnCode == Constants.completedOK )
             inputObject = input.read()
-//          else
-//              gpp.DataClass.unexpectedReturnCode("Collect: error while collecting", returnCode)
         }
         returnCode = callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
-//      returnCode = rc.&"${rDetails.rFinaliseMethod}"( rDetails.rFinaliseData )
-//      if (returnCode != Constants.completedOK)
-//          gpp.DataClass.unexpectedReturnCode("Collect: error while finalising", returnCode)
-
-
 	}
 
    	void run(){
-		// now process any log that may be present
-        runMethod()
-		if ( inputObject.log != []) Logger.produceLog(inputObject.log, logFileName)
-        // added to deal with visualiser process
-        if (visLogChan != null) visLogChan.write(new UniversalTerminator())
+        if (logPhaseName == "")
+            runMethod()
+        else {
+            assert visLogChan != null :"Collector is logged so visLogChan must not be null"
+            assert logPropertyName != "" : "Collector is logged so logPropertyName must not be null"
+            def timer = new CSTimer()
+            Logger.startLog(logPhaseName, timer.read())
+            Class resultsClass = Class.forName(rDetails.rName)
+            def rc = resultsClass.newInstance()
+            int returnCode
+            returnCode = callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
+            Logger.initLog(logPhaseName, timer.read())
+            inputObject = input.read()
+            while (!(inputObject instanceof UniversalTerminator)){
+                Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                collected += 1
+                returnCode = callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
+                inputObject = input.read()
+            }
+            Logger.workStartEvent(logPhaseName, timer.read())
+            returnCode = callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
+            Logger.workEndEvent(logPhaseName, timer.read())
+            Logger.endEvent(logPhaseName, timer.read())
+            visLogChan.write(new UniversalTerminator())
+        }
 	}
 
 }

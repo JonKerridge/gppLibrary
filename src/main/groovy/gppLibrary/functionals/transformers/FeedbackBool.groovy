@@ -64,23 +64,23 @@ class FeedbackBool extends DataClass implements CSProcess {
     		boolean running = true
     		Object inputObject = new Object()
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.initLog(logPhaseName, timer.read())
+
+            Logger.initLog(logPhaseName, timer.read())
     		while (running){
     			inputObject = input.read()
     			if ( o instanceof UniversalTerminator){
     				running = false
     			}
     			else {
-                    logPhase << Logger.inputEvent(inputObject.getProperty(logPropertyName), timer.read())
+                    Logger.inputEvent(inputObject.getProperty(logPropertyName), timer.read())
                     returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 23)
     				output.write(inputObject)
-                    logPhase << Logger.outputEvent(outputObject.getProperty(logPropertyName), timer.read())
+                    Logger.outputEvent(outputObject.getProperty(logPropertyName), timer.read())
     				
     			}
     		}
-            logPhase << Logger.endEvent(timer.read())
-            inputObject.log << logPhase
+            Logger.endEvent(timer.read())
+
     		output.write(inputObject) // Universal terminator
         }
 	}

@@ -62,9 +62,8 @@ class OnePipelineCollect implements CSProcess{
     ResultDetails rDetails = null
     List <Boolean> outData = null
 
-    List <String> logPhaseNames = null
+    List <String> logPhaseNames = null // includes the Collect process as well
     String logPropertyName = ""
-    String logFileName = ""
     ChannelOutput visLogChan = null
 
     void run() {
@@ -72,8 +71,8 @@ class OnePipelineCollect implements CSProcess{
         assert (stageOp != null): "OnePipelineCollect: stageOp MUST be specified, one for each stage of the pipeline"
         if (pDetails != null)
             assert (stages == pDetails.stages): "OnePipelineCollect: Number of stages mismatch, Process exepcted $stages, Details specified ${pDetails.stages}"
-        if (logPhaseNames == null) logPhaseNames = (0..<stages).collect{i -> return ""}
-        //		if (stages < 2) gpp.DataClass.unexpectedReturnCode("OnePipelineCollect: insufficient worker stages ", stages)
+        if (logPhaseNames == null) logPhaseNames = (0 .. stages).collect{i -> return ""}
+        // includes the Collect stage
         if (outData == null) outData = (0..<stages).collect{i -> return true}
         //		if ((pDetails != null) &&(stages != pDetails.stages) )
         //			gpp.DataClass.unexpectedReturnCode("OnePipelineOne: Number of stages mismatch, Process exepcted $stages, Details specified ${pDetails.stages}", -1)
@@ -100,7 +99,8 @@ class OnePipelineCollect implements CSProcess{
         }
         def collectStage = new Collect( input: interConnect[stages - 1].in(),
                                         rDetails: rDetails,
-                                        logFileName: logFileName,
+                                        logPhaseName: logPhaseNames[stages],
+                                        logPropertyName: logPropertyName,
                                         visLogChan: visLogChan)
         stageProcesses << firstStage
         stageProcesses << collectStage
