@@ -89,13 +89,13 @@ class ReducerPrevious implements CSProcess {
 		}
 		else { // logging
 			def timer = new CSTimer()
-			List logPhase = []
-			logPhase << Logger.initLog(logPhaseName, timer.read())
+
+			Logger.initLog(logPhaseName, timer.read())
 
 			for ( i in 0 ..< sources){
 				o =  inputList[i].read()
 				if ( ! (o instanceof UniversalTerminator)){
-					logPhase << Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
+					Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
 					buffers[i] = o
 					if (! icKnown) {
 						ic = o				// should only do this once!!
@@ -114,11 +114,11 @@ class ReducerPrevious implements CSProcess {
 				returnValues = ic.&"$reduceFunction"(buffers, outClass)
 				if (returnValues[0] == DataClassInterface.normalContinuation){
 					output.write(returnValues[2])
-					logPhase << Logger.outputEvent(returnValues[2].getProperty(logPropertyName), timer.read())
+					Logger.outputEvent(returnValues[2].getProperty(logPropertyName), timer.read())
 					returnValues[1].each{ index ->
 						o =  inputList[index].read()
 						if ( ! (o instanceof UniversalTerminator)){
-							logPhase << Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
+							Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
 							buffers[index] = o
 						}
 						else {
@@ -131,8 +131,8 @@ class ReducerPrevious implements CSProcess {
 				else 
 					gpp.DataClass.unexpectedReturnCode("Reducer: error during $reduceFunction", returnValues[0])
 			}
-			logPhase << Logger.endEvent(timer.read())
-			o.log << logPhase
+			Logger.endEvent(timer.read())
+
 			output.write(o)  // write the last instance of a UT
 		}
 	}

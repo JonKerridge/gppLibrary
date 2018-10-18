@@ -68,8 +68,8 @@ class EmitWithFeedback extends DataClass implements CSProcess {
         else {
             //logging required
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.startLog(logPhaseName, timer.read())
+
+            Logger.startLog(logPhaseName, timer.read())
 
     		Class EmitClass = Class.forName(eDetails.dName)
     		boolean running = true
@@ -80,7 +80,7 @@ class EmitWithFeedback extends DataClass implements CSProcess {
     		def guards = [feedback, new Skip()]
     		def alt = new ALT(guards)
 
-           logPhase << Logger.initLog(logPhaseName, timer.read())
+           Logger.initLog(logPhaseName, timer.read())
 
     		while (running){
     			switch (alt.priSelect()){
@@ -93,17 +93,15 @@ class EmitWithFeedback extends DataClass implements CSProcess {
 //    					returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
     					if ( returnCode == DataClassInterface.normalContinuation) {
     						output.write(ec)
-                            logPhase << Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
+                            Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
     					}
     					else
                             running = false
     					break
     			}
     		}
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
-            def ut = new UniversalTerminator()
-            ut.log << logPhase
-            output.write(ut)
+            Logger.endEvent(logPhaseName, timer.read())
+            output.write(new UniversalTerminator())
         }
 	}
 

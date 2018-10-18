@@ -27,7 +27,7 @@ public interface DataClassInterface {
 	 *
 	 * This method creates a clone of the object; if an object contains other objects then the programmer
 	 * MUST write their own clone method so that it creates a deep copy rather than the normal shallow copy.<p>
-	 * Clone MUST be implemented if an object is passed through a {@link gppLibrary.connectors.spreaders} process that
+	 * Clone MUST be implemented if an object is passed through a gppLibrary.connectors.spreaders process that
 	 * involves any form of Cast.
 	 *
 	 * @usage o.clone()
@@ -40,7 +40,7 @@ public interface DataClassInterface {
 	 * Use to create a version of an object that removes machine specific properties, such as
 	 * static variables, channel addresses that are not Serializable.<p>
 	 * serialize MUST be implemented if the object is processed by means of
-	 * {@link gppLibrary.cluster.connectors#OneNodeRequestedList}.
+	 * {@link gppLibrary.cluster.connectors.OneNodeRequestedList}.
 	 *
 	 * @return a version of the object that implements the Serializable interface
 	 */

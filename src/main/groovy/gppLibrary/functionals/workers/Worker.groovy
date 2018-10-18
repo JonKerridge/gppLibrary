@@ -25,7 +25,7 @@ import jcsp.lang.*
  * @param input			The channel from which the input object to be processed is read
  * @param output		The channel to which the processed object is written
  * @param function		The name of the method corresponding to the method in the data object that is to be employed; the method should return either
- * {@link gppLibrary.DataClassInterface.completedOK} or a negative error code
+ * {@link gppLibrary.DataClassInterface#completedOK} or a negative error code
  * @param dataModifier	A list of any values to be used by the function method; it is polymorphic in type
  * 						and defaults to null
  * @param lDetails A LocalDetails object containing data pertaining to any local class used by the worker, defaults to null.
@@ -58,8 +58,10 @@ class Worker extends DataClass implements CSProcess {
 
     @CompileStatic
     void runMethod() {
-        int returnCode = -1
-        int workerType = 0
+        int returnCode
+        returnCode = -1
+        int workerType
+        workerType = 0
         if (outData) {
             if (barrier == null) workerType = 1
             else workerType = 2
@@ -68,14 +70,17 @@ class Worker extends DataClass implements CSProcess {
             if (barrier == null) workerType = 3
             else workerType = 4
         }
-        def wc = null
+        def wc
+        wc = null
         if ( lDetails != null){
             Class workerClass = Class.forName(lDetails.lName)
             wc = workerClass.newInstance()
             returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
         }
-        boolean running = true
-        Object inputObject = new Object()
+        boolean running
+        running = true
+        Object inputObject
+        inputObject = new Object()
 
         while (running){
             inputObject = input.read()
@@ -111,7 +116,7 @@ class Worker extends DataClass implements CSProcess {
                     break
             }
         }
-        // the UT may already contain a logPhase that needs to be passed on
+        // the inputObject is a UT
         output.write(inputObject)
     } //runMethod
 
@@ -120,10 +125,12 @@ class Worker extends DataClass implements CSProcess {
             runMethod()
         else {  // getProperty() of this code cannot be compiled statically
             def timer = new CSTimer()
-            List logPhase = []
-			logPhase << Logger.startLog(logPhaseName, timer.read())
-            int returnCode = -1
-            int workerType = 0
+
+			Logger.startLog(logPhaseName, timer.read())
+            int returnCode
+            returnCode = -1
+            int workerType
+            workerType = 0
             if (outData) {
                 if (barrier == null) workerType = 1
                 else workerType = 2
@@ -132,16 +139,19 @@ class Worker extends DataClass implements CSProcess {
                 if (barrier == null) workerType = 3
                 else workerType = 4
             }
-            def wc = null
+            def wc
+            wc = null
             if ( lDetails != null){
                 Class workerClass = Class.forName(lDetails.lName)
                 wc = workerClass.newInstance()
                 returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
             }
-            boolean running = true
-            Object inputObject = new Object()
+            boolean running
+            running = true
+            Object inputObject
+            inputObject = new Object()
 
-            logPhase << Logger.initLog(logPhaseName, timer.read())
+            Logger.initLog(logPhaseName, timer.read())
 
             while (running){
                 inputObject = input.read()
@@ -149,17 +159,17 @@ class Worker extends DataClass implements CSProcess {
                     running = false
                 }
                 else {
-                    logPhase << Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                     returnCode = callUserMethod(inputObject, function, [dataModifier, wc], 1)
                     switch (workerType) {
                         case 1:
                             output.write(inputObject)
-                            logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                             break
                         case 2:
                             barrier.sync()
                             output.write(inputObject)
-                            logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                             break
                         default:
                             break
@@ -171,19 +181,19 @@ class Worker extends DataClass implements CSProcess {
                 switch (workerType) {
                     case 3:
                         output.write(wc)
-                        logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                        Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                         break
                     case 4:
                         barrier.sync()
                         output.write(wc)
-                        logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                        Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                         break
                     default:
                         break
                 }
             }
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
-            inputObject.log << logPhase
+            Logger.endEvent(logPhaseName, timer.read())
+
             output.write(inputObject)
         } // end of logged loop
     } // end run

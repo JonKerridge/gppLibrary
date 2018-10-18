@@ -55,26 +55,26 @@ class OneMapperOne implements CSProcess {
 		}
 		else { //logging
 			def timer = new CSTimer()
-			List logPhase = []
-			logPhase << Logger.initLog(logPhaseName, timer.read())
+
+			Logger.initLog(logPhaseName, timer.read())
 
 			Map localMap = [:]
 			def o = input.read()
 			Class outClass = Class.forName(outClassName)
 			while ( ! (o instanceof UniversalTerminator)){
-				logPhase << Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
+				Logger.inputEvent(o.getProperty(logPropertyName), timer.read())
 				localMap.putAll(o.&"$mapFunction"())
 				localMap.each{ k, v ->
 					def oc = outClass.newInstance()
 					oc.&"$createClass"(k,v)
 					output.write(oc)
-					logPhase << Logger.outputEvent(oc.getProperty(logPropertyName), timer.read())
+					Logger.outputEvent(oc.getProperty(logPropertyName), timer.read())
 				}
 				localMap = [:]
 				o = input.read()
 			}
-			logPhase << Logger.endEvent(timer.read())
-			o.log << logPhase
+			Logger.endEvent(timer.read())
+
 			output.write(o)
 		}
 	}

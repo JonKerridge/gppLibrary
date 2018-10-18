@@ -74,31 +74,29 @@ class Emit extends DataClass implements CSProcess {
             //logging required
 			logPhaseName = "" + logPhaseName
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.startLog(logPhaseName, timer.read())
+
+            Logger.startLog(logPhaseName, timer.read())
             Class EmitClass = Class.forName(eDetails.dName)
             boolean running = true
             int returnCode = -1
             Object ecInit = EmitClass.newInstance()
             returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 3)
 
-            logPhase << Logger.initLog(logPhaseName, timer.read())
+            Logger.initLog(logPhaseName, timer.read())
 
             while (running){
                 Object ec = EmitClass.newInstance()
                 returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
                 if ( returnCode == DataClassInterface.normalContinuation)  {
                     output.write(ec)
-                    logPhase << Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
+                    Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
                 }
                 else
                     running = false
 
             }
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
-            def ut = new UniversalTerminator()
-            ut.log << logPhase
-            output.write(ut)
+            Logger.endEvent(logPhaseName, timer.read())
+            output.write(new UniversalTerminator())
         }
     }
 

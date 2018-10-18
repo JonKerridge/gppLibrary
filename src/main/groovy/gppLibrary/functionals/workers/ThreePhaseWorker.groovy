@@ -96,8 +96,8 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
         }
         else { // logging
             def timer = new CSTimer()
-            List logPhase = []
-            logPhase << Logger.startLog(logPhaseName, timer.read())
+
+            Logger.startLog(logPhaseName, timer.read())
             int returnCode = -1
             def wc = null
             Class workerClass = Class.forName(lDetails.lName)
@@ -106,22 +106,22 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
 
             boolean running = true
             Object inputObject = new Object()
-			logPhase << Logger.initLog(logPhaseName, timer.read())
+			Logger.initLog(logPhaseName, timer.read())
 			
             while (running){ // first phase: inputting data into local worker
                 inputObject = input.read()
                 if ( inputObject instanceof UniversalTerminator)
                     running = false
                 else {
-                    logPhase << Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                     returnCode = callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
                 }
             }
             // now invoke the second phase function on the local worker
-            logPhase << Logger.workStartEvent( timer.read())
+            Logger.workStartEvent( timer.read())
             returnCode = callUserMethod(wc, workMethod, 11)
             //now output the data from the local worker class
-            logPhase << Logger.workEndEvent( timer.read())
+            Logger.workEndEvent( timer.read())
             running = true
             Object out = new Object()
             while (running){
@@ -130,12 +130,12 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
                     running = false
                 else {
                     output.write(out)
-                    logPhase << Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                 }
             }
             // now write the terminating UT that was read previously with log data appended
-            logPhase << Logger.endEvent(logPhaseName, timer.read())
-            inputObject.log << logPhase
+            Logger.endEvent(logPhaseName, timer.read())
+
             output.write(inputObject)
         } //end else
     }
