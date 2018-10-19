@@ -2,6 +2,13 @@ package gppJunitTests
 
 import org.junit.runner.JUnitCore
 // runs as a groovy script and provides a sequence of JUnit tests
+String logFilePath = "D:\\IJGradle\\gppLibrary\\src\\test\\groovy\\gppJunitTests\\LogFiles"
+def dir = new File(logFilePath)
+dir.eachFile {file ->
+    file.delete()
+    println "${file.getName()} deleted"
+}
+
 result = JUnitCore.runClasses (
             JUtest01,
             JUtest02,
@@ -26,8 +33,10 @@ result = JUnitCore.runClasses (
             JUtest19,
         JUtest20,
         JUtest20Log,
-            JUtest21,
-            JUtest22,
+        JUtest21,
+        JUtest22,
+        JUtest21Log,
+        JUtest22Log,
         JUtest23,
         JUtest24,
         JUtest23a,
@@ -54,6 +63,7 @@ String message = "Ran: " + result.getRunCount() +
                   ", Failed: " + result.getFailureCount()
 if (result.wasSuccessful()) {
     println "\nSUCCESS! " + message
+    println "$logFilePath contains the log files"
 } else {
     println "\nFAILURE! " + message + "\n"
     result.getFailures().each {
