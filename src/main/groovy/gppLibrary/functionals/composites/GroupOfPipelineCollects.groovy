@@ -64,10 +64,11 @@ class GroupOfPipelineCollects implements CSProcess {
         }
         List <List <String> >  logNames = []
 		if (logPhaseNames != null) {
-			for ( g in 0 ..< groups){
+            assert logPhaseNames.size() == stages+1 : "Group of Pipeline Collects: " +
+                    "logPhaseNames wrong size should be ${stages + 1}, currently $logPhaseNames"
+            for ( g in 0 ..< groups){
 				List <String> phaseNames = (0 .. stages).collect{s ->	return (String)"$g, "  + logPhaseNames[s]}
                 logNames[g] = phaseNames
-                println "GOPC $g - $phaseNames"
 			}
 		}
 		else {

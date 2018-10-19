@@ -35,8 +35,6 @@ import jcsp.lang.*
  * otherwise the process will not be logged
  * @param logPropertyName the name of a property in the eDetails object that will uniquely identify an instance of the object.
  * LogPropertyName must be specified if logPhaseName is specified
- *
- *
  */
 
 class Emit extends DataClass implements CSProcess {

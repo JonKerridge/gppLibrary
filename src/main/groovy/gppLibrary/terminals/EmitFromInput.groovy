@@ -24,6 +24,10 @@ import jcsp.lang.*
  * @param output The one2one channel to which new object instances are written
  * @param eDetails A {@link gppLibrary.LocalDetails} object that specifies the data class to be emitted
  * <p>
+ * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
+ * otherwise the process will not be logged
+ * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * LogPropertyName must be specified if logPhaseName is specified
  *
 */
 

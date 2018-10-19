@@ -32,7 +32,8 @@ import jcsp.lang.*
  * otherwise the process will not be logged.  Each process in the group will be uniquely indexed.
  * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.  
  * LogPropertyName must be specified if logPhaseName is specified 
- * 
+ *
+ *
  * @see jcsp.lang.Barrier
  * @see gppLibrary.functionals.workers.Worker
  */
