@@ -19,6 +19,10 @@ import jcsp.lang.*
  * @param feedback The channel used to read a boolean input; which when false causes
  * 					the process to terminate.  True values are ignored.
  * @param eDetails A {@link gppLibrary.DataDetails} object that specifies the data class to be emitted
+ * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
+ * otherwise the process will not be logged
+ * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * LogPropertyName must be specified if logPhaseName is specified
  *
 */
 
