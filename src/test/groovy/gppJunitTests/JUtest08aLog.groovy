@@ -70,7 +70,7 @@ class JUtest08aLog {
         testParallel.run()
         testParallel.removeAllProcesses()
 
-        println "8a: $er"
+        println "8aLog: $er"
 
         assertTrue (er.finalSum == 210)
         assertTrue (er.dataSetCount == 20)
