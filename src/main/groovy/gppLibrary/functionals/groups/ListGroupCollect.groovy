@@ -59,7 +59,7 @@ class ListGroupCollect implements CSProcess{
 		List network = (0 ..< workers).collect { e ->
 			new Collect ( input: (ChannelInput)inputList[e],
 						  rDetails: rDetails[e],
-						  logPhaseName: logPhaseName == "" ? "" : logPhaseName + "$e",
+						  logPhaseName: logPhaseName == "" ? "" : logPhaseName + ", $e",
 						  logPropertyName: logPropertyName,
 			 			  visLogChan: visLogChan)
 		}

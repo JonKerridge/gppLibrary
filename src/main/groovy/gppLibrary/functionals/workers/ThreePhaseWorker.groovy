@@ -40,8 +40,11 @@ import jcsp.lang.ChannelOutput
  * @param lDetails A LocalDetails object containing data pertaining to any local class used by the worker, defaults to null.
  * @param logPhaseName an optional string property, which if specified indicates that the process should be logged
  * otherwise the process will not be logged
- * @param logPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
- * LogPropertyName must be specified if logPhaseName is specified
+ * @param inputLogPropertyName the name of a property in the input object that will uniquely identify an instance of the object.
+ * inputLogPropertyName must be specified if logPhaseName is specified
+ * @param outputLogPropertyName the name of a property in the output object that will uniquely identify an instance of the object.
+ * outputLogPropertyName must be specified if logPhaseName is specified
+ *
  *
  */
 class ThreePhaseWorker extends DataClass implements CSProcess {
@@ -53,7 +56,8 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
     LocalDetails lDetails = null
 
     String logPhaseName = ""
-    String logPropertyName = ""
+    String inputLogPropertyName = ""
+    String outputLogPropertyName = ""
 
     @CompileStatic
     void runMethod() {
@@ -113,15 +117,15 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
                 if ( inputObject instanceof UniversalTerminator)
                     running = false
                 else {
-                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
                     returnCode = callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
                 }
             }
             // now invoke the second phase function on the local worker
-            Logger.workStartEvent( timer.read())
+            Logger.workStartEvent(logPhaseName,  timer.read())
             returnCode = callUserMethod(wc, workMethod, 11)
             //now output the data from the local worker class
-            Logger.workEndEvent( timer.read())
+            Logger.workEndEvent(logPhaseName,  timer.read())
             running = true
             Object out = new Object()
             while (running){
@@ -130,7 +134,7 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
                     running = false
                 else {
                     output.write(out)
-                    Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    Logger.outputEvent(logPhaseName, timer.read(), out.getProperty(outputLogPropertyName))
                 }
             }
             // now write the terminating UT that was read previously with log data appended

@@ -15,20 +15,20 @@ class TPWdata extends DataClass{
 
     int initClass (List d){
         maxInstances = d[0]
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int inputMethod(List params){ //[ [null, inputObject]
         TestData inputObject = params[1]
         wData += inputObject.data
 //        println "$wData, ${inputObject.data}"
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int workMethod() {
         wData = wData * 2
 //        println "new wData = $wData"
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     TestData outFunction() {

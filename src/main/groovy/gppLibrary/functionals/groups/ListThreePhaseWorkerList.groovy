@@ -45,7 +45,8 @@ class ListThreePhaseWorkerList implements CSProcess {
 	int workers
 
 	String logPhaseName = ""
-	String logPropertyName = ""
+	String inputLogPropertyName = ""
+	String outputLogPropertyName = ""
 
 	void run(){
 		assert (inputList.size() == outputList.size()) : "ListThreePhaseWorkerList: inputList and outputList must be same size"
@@ -58,7 +59,8 @@ class ListThreePhaseWorkerList implements CSProcess {
 						 outFunction: outFunction,
 						 dataModifier : dataModifier == null ? null : dataModifier,
 						 logPhaseName: logPhaseName == "" ?  "" : (String)"$e, "  + logPhaseName ,
-						 logPropertyName: logPropertyName)
+						 inputLogPropertyName: inputLogPropertyName,
+						 outputLogPropertyName: outputLogPropertyName)
 		}
 		new PAR (network).run()
 
