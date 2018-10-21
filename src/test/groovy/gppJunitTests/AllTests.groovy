@@ -72,7 +72,7 @@ result = JUnitCore.runClasses (
         JUtest36,
         JUtest36Log,
         JUtest37,
-//        JUtest37Log, run on own works OK but in all tests fails??
+        JUtest37Log, //TPWdata required change to outFunction to make work
         JUtest38,
         JUtest38Log,
             )

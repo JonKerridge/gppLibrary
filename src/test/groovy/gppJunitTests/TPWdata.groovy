@@ -21,18 +21,22 @@ class TPWdata extends DataClass{
     int inputMethod(List params){ //[ [null, inputObject]
         TestData inputObject = params[1]
         wData += inputObject.data
-//        println "$wData, ${inputObject.data}"
+//        println "In: $wData, ${inputObject.data}"
         return completedOK
     }
 
     int workMethod() {
         wData = wData * 2
-//        println "new wData = $wData"
+//        println "Work: new wData = $wData"
         return completedOK
     }
 
     TestData outFunction() {
-        if (currentInstance > maxInstances) return null
+//        println "outFunction $currentInstance; max = $maxInstances"
+        if (currentInstance > maxInstances) {
+            currentInstance = 1 // so works in AllTests
+            return null
+        }
         else {
             TestData td = new TestData(data: wData)
             td.instanceNumber = currentInstance

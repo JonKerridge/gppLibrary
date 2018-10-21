@@ -34,7 +34,7 @@ import jcsp.lang.ChannelOutput
  * @param inputMethod  	The name of the method corresponding to the method in the worker object that is to be employed to do the input operation
  * @param workMethod	The name of the method corresponding to the method in the worker object that is to be employed to do the internal work operation
  * @param outFunction	The name of the function corresponding to the function method in the worker object that is to be employed to do the output operation;
- * returns an object or null
+ * returns an object or null. Null signifies that all the data has been output.
  * @param dataModifier	A list of any values to be used by the inputMethod; it is polymorphic in type
  * 						and defaults to null
  * @param lDetails A LocalDetails object containing data pertaining to any local class used by the worker, defaults to null.
