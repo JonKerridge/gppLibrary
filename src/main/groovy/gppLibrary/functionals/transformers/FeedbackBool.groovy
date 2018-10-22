@@ -4,6 +4,7 @@ import gppLibrary.DataClass
 import gppLibrary.FeedbackDetails
 import gppLibrary.UniversalTerminator
 import groovy.transform.CompileStatic
+import gppLibrary.Logger
 import jcsp.lang.*
 
 /**
@@ -14,7 +15,7 @@ import jcsp.lang.*
  * <p>
  * @param input A ChannelInput used to read input objects
  * @param output A ChannelOutput used to output processed data objects
- * @param feedback A ChannelOutput used to return booleans from this process to a previous {@link gppLibrary.terminals.EmitWithhFeedback) process
+ * @param feedback A ChannelOutput used to return booleans from this process to a previous {@link gppLibrary.terminals.EmitWithFeedback) process
  * @param fDetails A {@link gppLibrary.FeedbackDetails} object that specifies the feedback boolean  and the evaluation function
  * <p>
  *
@@ -68,18 +69,18 @@ class FeedbackBool extends DataClass implements CSProcess {
             Logger.initLog(logPhaseName, timer.read())
     		while (running){
     			inputObject = input.read()
-    			if ( o instanceof UniversalTerminator){
+    			if ( inputObject instanceof UniversalTerminator){
     				running = false
     			}
     			else {
-                    Logger.inputEvent(inputObject.getProperty(logPropertyName), timer.read())
+                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                     returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 23)
-    				output.write(inputObject)
-                    Logger.outputEvent(outputObject.getProperty(logPropertyName), timer.read())
+    				 output.write(inputObject)
+                    Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
     				
     			}
     		}
-            Logger.endEvent(timer.read())
+            Logger.endEvent(logPhaseName, timer.read())
 
     		output.write(inputObject) // Universal terminator
         }

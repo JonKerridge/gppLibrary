@@ -22,6 +22,7 @@ class TestData extends DataClass {
     static String func3 = "func3"
     static String finaliseMethod = "finalise"
     static String combineMethod = "combine"
+    static String feedbackMethod = "feedback"
 
     int initClass ( List d){
         instances = d[0]
@@ -30,89 +31,89 @@ class TestData extends DataClass {
         w1 = 0
         w2 = 0
         w3 = 0
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int init ( List d){
         cloneInstance = 1
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     static int instance
     static int instances
 
     int createInstance (List d){
-        if ( instance > instances) return DataClassInterface.normalTermination
+        if ( instance > instances) return normalTermination
         else {
             data = instance
             instanceNumber = instance
             instance = instance + 1
-            return DataClassInterface.normalContinuation
+            return normalContinuation
         }
     }
 
     int createFromInput (List d){
         TestData td = d[0]
         def createData = d[1] // null in this case
-        if ( instance > instances) return DataClassInterface.normalTermination
+        if ( instance > instances) return normalTermination
         else {
             data = td.data
             instanceNumber = instance
             instance = instance + 1
             cloneNumber = td.cloneNumber
-            return DataClassInterface.normalContinuation
+            return normalContinuation
         }
     }
 
     int createFromLocal(List d){
         TestWorker localWorker = d[0]
-        if ( instance > instances) return DataClassInterface.normalTermination
+        if ( instance > instances) return normalTermination
         else {
             data = localWorker.consts[instance]
             instanceNumber = instance
             instance = instance + 1
-            return DataClassInterface.normalContinuation
+            return normalContinuation
         }
 
-        return DataClassInterface.normalContinuation
+        return normalContinuation
     }
 
     int doubleData(List p){
         data = 2 * data
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int func1(List p){
         List modifier = p[0]
         TestWorker wc = p[1]
         w1 += modifier[0] + wc.consts[instanceNumber]
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int func2(List p){
         List modifier = p[0]
         TestWorker wc = p[1]
         w2 += modifier[0] + wc.consts[instanceNumber]
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int func3(List p){
         List modifier = p[0]
         TestWorker wc = p[1]
         w3 += modifier[0] + wc.consts[instanceNumber]
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int finalise (TestData o){
         data = o.data
         instanceNumber = o.instanceNumber
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     int combine(TestData o){
         data += o.data
         instanceNumber = o.instanceNumber
-        return DataClassInterface.completedOK
+        return completedOK
     }
 
     static int cloneInstance = 1
