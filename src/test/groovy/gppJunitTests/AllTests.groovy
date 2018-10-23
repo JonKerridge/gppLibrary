@@ -75,6 +75,10 @@ result = JUnitCore.runClasses (
         JUtest37Log, //TPWdata required change to outFunction to make work
         JUtest38,
         JUtest38Log,
+        JUtest39,
+        JUtest39Log,
+        JUtest40,
+        JUtest40Log
             )
 
 String message = "Ran: " + result.getRunCount() +

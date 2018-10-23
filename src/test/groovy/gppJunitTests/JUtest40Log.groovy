@@ -3,8 +3,10 @@ package gppJunitTests
 import gppLibrary.DataDetails
 import gppLibrary.FeedbackDetails
 import gppLibrary.ResultDetails
+import gppLibrary.connectors.reducers.AnyFanOne
+import gppLibrary.connectors.spreaders.OneFanAny
+import gppLibrary.functionals.groups.AnyGroupAny
 import gppLibrary.functionals.transformers.FeedbackBool
-import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -17,7 +19,7 @@ import static org.junit.Assert.assertTrue
 import gppLibrary.Logger
 import gppLibrary.LoggingVisualiser
 
-class JUtest39Log {
+class JUtest40Log {
 
     @Test
     public void test() {
@@ -26,14 +28,18 @@ class JUtest39Log {
         Logger.initLogChannel(logChan.out())
         def logVis = new LoggingVisualiser( logInput: logChan.in(),
                 collectors: 1,
-                logFileName: "D:\\IJGradle\\gppLibrary\\src\\test\\groovy\\gppJunitTests\\LogFiles/39")
+                logFileName: "D:\\IJGradle\\gppLibrary\\src\\test\\groovy\\gppJunitTests\\LogFiles/40")
 
         def chan1 = Channel.one2one()
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
 
-        def limit = 15
+        def anyChan1 = Channel.one2any()
+        def anyChan2 = Channel.any2one()
+
+        int limit = 15
+        int workers = 3
 
         def er = new TestExtract()
 
@@ -61,12 +67,22 @@ class JUtest39Log {
                 logPhaseName: "emit",
                 logPropertyName: "instanceNumber"  )
 
-        def worker = new Worker(
+        def ofa = new OneFanAny(destinations: workers,
                 input: chan1.in(),
-                output: chan2.out(),
+                outputAny: anyChan1.out())
+
+        def workerGroup = new AnyGroupAny(
+                inputAny: anyChan1.in(),
+                outputAny: anyChan2.out(),
                 function: TestData.f1,
+                workers: workers,
                 logPhaseName: "work",
-                logPropertyName: "data" )
+                logPropertyName: "data")
+
+        def afo = new AnyFanOne(
+                sources: workers,
+                inputAny: anyChan2.in(),
+                output: chan2.out())
 
         def feedBack = new FeedbackBool(
                 input: chan2.in(),
@@ -82,11 +98,11 @@ class JUtest39Log {
                 logPropertyName: "data",
                 visLogChan: logChan.out())
 
-        PAR testParallel = new PAR([logVis, emitter, worker, feedBack, collector])
+        PAR testParallel = new PAR([logVis, emitter, ofa, workerGroup, afo, feedBack, collector])
         testParallel.run()
         testParallel.removeAllProcesses()
 
-        println "39Log: $er"
+        println "40Log: $er"
 
         assertTrue (er.dataSetCount == (limit))
         assertTrue (er.finalSum == 240)

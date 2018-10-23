@@ -54,7 +54,7 @@ class EmitWithFeedback extends DataClass implements CSProcess {
                     Object ec = EmitClass.newInstance()
                     returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
 //                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
-                    if ( returnCode == DataClassInterface.normalContinuation) {
+                    if ( returnCode == normalContinuation) {
                         output.write(ec)
                     }
                     else
