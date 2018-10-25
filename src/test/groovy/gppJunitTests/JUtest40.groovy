@@ -7,7 +7,6 @@ import gppLibrary.connectors.reducers.AnyFanOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.functionals.groups.AnyGroupAny
 import gppLibrary.functionals.transformers.FeedbackBool
-import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -28,7 +27,7 @@ class JUtest40 {
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
 
-        int limit = 15
+        int limit = 25 // tested with 10, 15, 19, 20, 21, 25
         int workers = 3
 
         def er = new TestExtract()
@@ -74,7 +73,7 @@ class JUtest40 {
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),
-                fDetails: feedbackDetails )
+                fDetails: feedbackDetails)
 
         def collector = new Collect( input: chan3.in(),
                 rDetails: resultDetails)
@@ -85,9 +84,14 @@ class JUtest40 {
 
         println "40: $er"
 
-        assertTrue (er.dataSetCount == (limit))
-        assertTrue (er.finalSum == 240)
-        assertTrue (er.finalInstance == limit)
+        int sum = 0
+        int endVal = limit > 20 ? 20 : limit
+        for ( i in 1 .. endVal) sum = sum + i
+        sum = sum * 2
+
+        assertTrue (er.dataSetCount == endVal)
+        assertTrue (er.finalSum == sum)
+        assertTrue (er.finalInstance == endVal)
         assertTrue (er.maxClone == 0)
         assertTrue (er.w1 == 0)
         assertTrue (er.w2 == 0)

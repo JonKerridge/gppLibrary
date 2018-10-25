@@ -2,88 +2,44 @@ package gppLibrary.functionals.transformers
 
 import gppLibrary.DataClass
 import gppLibrary.FeedbackDetails
-import gppLibrary.UniversalTerminator
 import groovy.transform.CompileStatic
-import gppLibrary.Logger
-import jcsp.lang.*
+import groovyJCSP.PAR
+import jcsp.lang.CSProcess
+import jcsp.lang.Channel
+import jcsp.lang.ChannelInput
+import jcsp.lang.ChannelOutput
+import jcsp.lang.One2OneChannel
 
-/**
- * FeedbackBool reads data objects from input, which it processes and writes to output.
- * It also undertakes an evaluation of a function, specified in fDetails, which if true results
- * in the writing of a feedback boolean to an {@link gppLibrary.terminals.EmitWithFeedback} process
- *
- * <p>
- * @param input A ChannelInput used to read input objects
- * @param output A ChannelOutput used to output processed data objects
- * @param feedback A ChannelOutput used to return booleans from this process to a previous {@link gppLibrary.terminals.EmitWithFeedback) process
- * @param fDetails A {@link gppLibrary.FeedbackDetails} object that specifies the feedback boolean  and the evaluation function
- * <p>
- *
-*/
-
-
+@CompileStatic
 class FeedbackBool extends DataClass implements CSProcess {
 
-	ChannelInput input
-	ChannelOutput output
-	ChannelOutput feedback
-	FeedbackDetails fDetails
+    ChannelInput input
+    ChannelOutput output
+    ChannelOutput feedback
+    FeedbackDetails fDetails
 
     String logPhaseName = ""
     String logPropertyName = ""
 
-    @CompileStatic
-    void runMethod() {
-        Class FeedbackClass = Class.forName(fDetails.fName)
-        int returnCode = -1
-        Object fc = FeedbackClass.newInstance()
-        returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
-        boolean running = true
-        Object inputObject = new Object()
-        while (running){
-            inputObject = input.read()
-            if ( inputObject instanceof UniversalTerminator){
-                running = false
-            }
-            else {
-                returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 23)
-                output.write(inputObject)
-            }
-        }
-        output.write(inputObject)
+    One2OneChannel requestChan = Channel.one2one()
+    One2OneChannel responseChan = Channel.one2one()
+
+    void run() {
+        def check = new FeedbackChecker(
+                feedback: feedback,
+                response: responseChan.in(),
+                request: requestChan.out())
+        def process = new FeedbackBoolProcess(
+                input: input,
+                output: output,
+                request: requestChan.in(),
+                response: responseChan.out(),
+                fDetails: fDetails,
+                logPhaseName: logPhaseName,
+                logPropertyName: logPropertyName)
+
+        new PAR([check, process]).run()
     }
 
-	void run(){
-        if (logPhaseName == "") {
-            runMethod()
-        }
-        else { // logging
-    		Class FeedbackClass = Class.forName(fDetails.fName)
-    		int returnCode = -1
-    		Object fc = FeedbackClass.newInstance()
-            returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
-    		boolean running = true
-    		Object inputObject = new Object()
-            def timer = new CSTimer()
-
-            Logger.initLog(logPhaseName, timer.read())
-    		while (running){
-    			inputObject = input.read()
-    			if ( inputObject instanceof UniversalTerminator){
-    				running = false
-    			}
-    			else {
-                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
-                    returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 23)
-    				 output.write(inputObject)
-                    Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
-    				
-    			}
-    		}
-            Logger.endEvent(logPhaseName, timer.read())
-
-    		output.write(inputObject) // Universal terminator
-        }
-	}
 
 }

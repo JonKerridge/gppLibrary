@@ -22,7 +22,7 @@ class JUtest39 {
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
 
-        def limit = 15
+        int limit = 15  // tested with 15, 19, 20, 21 and 25
 
         def er = new TestExtract()
 
@@ -51,15 +51,13 @@ class JUtest39 {
         def worker = new Worker(
                 input: chan1.in(),
                 output: chan2.out(),
-                function: TestData.f1
-        )
+                function: TestData.f1 )
 
         def feedBack = new FeedbackBool(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),
-                fDetails: feedbackDetails
-        )
+                fDetails: feedbackDetails)
 
         def collector = new Collect( input: chan3.in(),
                 rDetails: resultDetails)
@@ -70,14 +68,17 @@ class JUtest39 {
 
         println "39: $er"
 
-        assertTrue (er.dataSetCount == (limit))
-        assertTrue (er.finalSum == 240)
-        assertTrue (er.finalInstance == limit)
+        int sum = 0
+        int endVal = limit > 20 ? 20 : limit
+        for ( i in 1 .. endVal) sum = sum + i
+        sum = sum * 2
+
+        assertTrue (er.dataSetCount == endVal)
+        assertTrue (er.finalSum == sum)
+        assertTrue (er.finalInstance == endVal)
         assertTrue (er.maxClone == 0)
         assertTrue (er.w1 == 0)
         assertTrue (er.w2 == 0)
         assertTrue (er.w3 == 0)
-
-
     }
 }

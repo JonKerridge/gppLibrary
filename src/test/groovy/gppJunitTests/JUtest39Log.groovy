@@ -88,14 +88,17 @@ class JUtest39Log {
 
         println "39Log: $er"
 
-        assertTrue (er.dataSetCount == (limit))
-        assertTrue (er.finalSum == 240)
-        assertTrue (er.finalInstance == limit)
+        int sum = 0
+        int endVal = limit > 20 ? 20 : limit
+        for ( i in 1 .. endVal) sum = sum + i
+        sum = sum * 2
+
+        assertTrue (er.dataSetCount == endVal)
+        assertTrue (er.finalSum == sum)
+        assertTrue (er.finalInstance == endVal)
         assertTrue (er.maxClone == 0)
         assertTrue (er.w1 == 0)
         assertTrue (er.w2 == 0)
         assertTrue (er.w3 == 0)
-
-
     }
 }

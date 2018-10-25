@@ -45,24 +45,35 @@ class EmitWithFeedback extends DataClass implements CSProcess {
 
         def guards = [feedback, new Skip()]
         def alt = new ALT(guards)
-        while (running){
-            switch (alt.priSelect()){
+        boolean altRead = false
+        while (running) {
+            switch (alt.priSelect()) {
                 case 0: // feedback input
                     running = feedback.read()
+                    altRead = true
+//                    println "\t\tEWF: stopping in feedback part"
                     break
                 case 1: // skip guard
                     Object ec = EmitClass.newInstance()
                     returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
 //                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
-                    if ( returnCode == normalContinuation) {
+                    if (returnCode == normalContinuation) {
+//                        println "\t\tEWF: continuing $ec"
                         output.write(ec)
-                    }
-                    else
+                    } else {
                         running = false
+//                        println "\t\tEWF: stopping in data gen part"
+                    }
                     break
             }
         }
+//        println "\t\tEWF: sending UT $altRead"
         output.write(new UniversalTerminator())
+//        println "\t\tEWF: sent UT"
+        if (!altRead){
+            feedback.read()
+//            println "\t\tEWF: read the feedback channel after UT sent"
+        }
     }
 
 	void run(){
@@ -72,40 +83,47 @@ class EmitWithFeedback extends DataClass implements CSProcess {
         else {
             //logging required
             def timer = new CSTimer()
-
             Logger.startLog(logPhaseName, timer.read())
-
-    		Class EmitClass = Class.forName(eDetails.dName)
-    		boolean running = true
-    		int returnCode = -1
-    		Object ecInit = EmitClass.newInstance()
+            Class EmitClass = Class.forName(eDetails.dName)
+            boolean running = true
+            int returnCode = -1
+            Object ecInit = EmitClass.newInstance()
             returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 20)
-
-    		def guards = [feedback, new Skip()]
-    		def alt = new ALT(guards)
-
-           Logger.initLog(logPhaseName, timer.read())
-
-    		while (running){
-    			switch (alt.priSelect()){
-    				case 0:	// feedback input
-    					running = feedback.read()
-    					break
-    				case 1: // skip guard
-    					Object ec = EmitClass.newInstance()
-              returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
-//    					returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
-    					if ( returnCode == DataClassInterface.normalContinuation) {
-    						output.write(ec)
+            Logger.initLog(logPhaseName, timer.read())
+            def guards = [feedback, new Skip()]
+            def alt = new ALT(guards)
+            boolean altRead = false
+            while (running) {
+                switch (alt.priSelect()) {
+                    case 0: // feedback input
+                        running = feedback.read()
+                        altRead = true
+//                    println "\t\tEWF: stopping in feedback part"
+                        break
+                    case 1: // skip guard
+                        Object ec = EmitClass.newInstance()
+                        returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
+//                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
+                        if (returnCode == normalContinuation) {
+//                        println "\t\tEWF: continuing $ec"
+                            output.write(ec)
                             Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
-    					}
-    					else
+                        } else {
                             running = false
-    					break
-    			}
-    		}
-            Logger.endEvent(logPhaseName, timer.read())
+//                        println "\t\tEWF: stopping in data gen part"
+                        }
+                        break
+                }
+            }
+//        println "\t\tEWF: sending UT $altRead"
             output.write(new UniversalTerminator())
+            Logger.endEvent(logPhaseName, timer.read())
+//        println "\t\tEWF: sent UT"
+            if (!altRead){
+                feedback.read()
+//            println "\t\tEWF: read the feedback channel after UT sent"
+            }
+
         }
 	}
 

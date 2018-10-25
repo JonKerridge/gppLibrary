@@ -17,11 +17,13 @@ class FeedbackData extends DataClass {
 
     int fMethod (List p){
         TestData td = p[0]
-        ChannelOutput fbChan = p[1]
-        if (td.instanceNumber < limit)
-            fbChan.write(true)
-        else
-            fbChan.write(false)
-        return completedOK
+        if (td.instanceNumber > limit) {
+//            println "fMethod termination ${td.instanceNumber} limit = $limit"
+            return normalTermination
+        }
+        else {
+//            println "fMethod continue ${td.instanceNumber} limit = $limit"
+            return normalContinuation
+        }
     }
 }

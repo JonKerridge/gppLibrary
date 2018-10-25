@@ -1,10 +1,12 @@
 package gppJunitTests
 
 import gppLibrary.*
+import jcsp.lang.CSTimer
 
 //@CompileStatic
 class TestData extends DataClass {
 
+    def timer = new CSTimer()
     int data = 0
     int instanceNumber = 0
     int cloneNumber = 0
@@ -74,12 +76,11 @@ class TestData extends DataClass {
             instance = instance + 1
             return normalContinuation
         }
-
-        return normalContinuation
     }
 
     int doubleData(List p){
         data = 2 * data
+        timer.sleep(10)
         return completedOK
     }
 
