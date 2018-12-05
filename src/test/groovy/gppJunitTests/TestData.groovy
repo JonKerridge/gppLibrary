@@ -80,7 +80,7 @@ class TestData extends DataClass {
 
     int doubleData(List p){
         data = 2 * data
-        timer.sleep(10)
+//        timer.sleep(10)
         return completedOK
     }
 

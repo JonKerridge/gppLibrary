@@ -27,7 +27,7 @@ class JUtest40 {
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
 
-        int limit = 25 // tested with 10, 15, 19, 20, 21, 25
+        int limit = 15 // tested with 10, 15, 19, 20, 21, 25
         int workers = 3
 
         def er = new TestExtract()

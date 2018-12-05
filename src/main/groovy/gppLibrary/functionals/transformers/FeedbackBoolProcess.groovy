@@ -60,7 +60,7 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
                     running = false
                 }
             }
-        }
+        }  // running
         // now have to deal with any remaining data after limit reached
         while (limitReached && !dataEnded) {
 //            println "Entering first clearing loop $limitReached, $dataEnded"
