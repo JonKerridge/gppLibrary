@@ -56,7 +56,7 @@ class Emit extends DataClass implements CSProcess {
         while (running){
             Object ec = EmitClass.newInstance()
             returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
-            if ( returnCode == DataClassInterface.normalContinuation)
+            if ( returnCode == normalContinuation)
                 output.write(ec)
             else
                 running = false

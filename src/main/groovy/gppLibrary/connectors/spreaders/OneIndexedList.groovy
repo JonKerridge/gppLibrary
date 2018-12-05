@@ -9,11 +9,12 @@ import jcsp.lang.ChannelInput
 import jcsp.lang.ChannelOutput
 
 /**
- * The OneDirectedList process reads a data object from its input channel and depending
+ * The OneIndexedList process reads a data object from its input channel and depending
  * on the value contained in its indexProperty will write the object to the corresponding element
  * of the channel output list outputLList.<p>
  * The process does NOT check that the value of the indexProperty to ensure that<br>
- * 0 <= indexProperty < outputList.szie()
+ * 0 <= indexProperty < outputList.size().  This should be checked in the called function,
+ * which should return a negative return code that will cause the process network to terminate
  *
  * @param input The channel input from which data objects are read
  * @param outputList the channel output list to which data objects are written
@@ -32,16 +33,13 @@ class OneIndexedList extends DataClass implements CSProcess {
 
 	void run(){
 		int destinations = outputList.size()
-		def o = input.read()
-		while ( ! (o instanceof UniversalTerminator ) ){
-//			int index = o.&"$indexFunction"(indexBounds)
-            int index = callUserMethod(o, indexFunction, indexBounds, 24)
-//			if ((index < 0) || (index >= destinations))
-//				gpp.DataClass.unexpectedReturnCode("OneIndexedList: destination index invalid", index)
-			((ChannelOutput)outputList[index]).write(o)
-			o = input.read()
+		Object inputObject = input.read()
+		while ( ! (inputObject instanceof UniversalTerminator ) ){
+            int index = callUserFunction(inputObject, indexFunction, indexBounds, 24)
+			((ChannelOutput)outputList[index]).write(inputObject)
+			inputObject = input.read()
 		}
-		for ( i in 0 ..< destinations) ((ChannelOutput)outputList[i]).write(o)
+		for ( i in 0 ..< destinations) ((ChannelOutput)outputList[i]).write(inputObject)
 	}
 
 }

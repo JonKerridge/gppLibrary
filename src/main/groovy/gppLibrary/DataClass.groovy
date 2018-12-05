@@ -43,38 +43,53 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
         "OneIndexedList: destination index invalid",                            //24
         "FeedbackObject: error during init phase",                              //25
         "FeedbackObject: error during invoke",                                  //26        
-        "Client-Server: Client Process initialisation method failed",           //27
-        "Client-Server: Client process call to request initialisation failed",  //28
-        "Client-Server: Server process call to request initialisation failed",  //29
-        "Client-Server: Server attempt to initialise server class failed",      //30
-        "Client-Server: Server failed to incorporate a new child",              //31
-        "Client-Server: Server failed to finalise correctly",                   //32
-        "Client-Server: Client process failed to create new individual",        //33
-        
-        
-        
-        ]
+        "Evolutionary: Client Process initialisation method failed",           //27
+        "Evolutionary: Client process call to request initialisation failed",  //28
+        "Evolutionary: Server process call to request initialisation failed",  //29
+        "Evolutionary: Server attempt to initialise server class failed",      //30
+        "Evolutionary: Server failed to incorporate a new child",              //31
+        "Evolutionary: Server failed to finalise correctly",                   //32
+        "Evolutionary: Client process failed to create new individual",        //33
+	]
+
+	/**
+	 * @param o
+	 * @param methodName
+	 * @param parameters
+	 * @param caller
+	 * @return
+	 */
+	int callUserFunction ( Object o, String methodName, List parameters, int caller){
+		int returnCode
+		returnCode = o.&"$methodName" ( parameters)
+		if ( returnCode < 0){
+			unexpectedReturnCode (callerMessages[caller], methodName, parameters, returnCode)
+//			return returnCode  // will never be invoked as system exits on error
+		}
+		else
+			return returnCode
+	}
 
 
-    /**
-     * @param o
-     * @param methodName
-     * @param parameters
-     * @param caller
-     * @return
-     */
-    int callUserMethod ( Object o, String methodName, List parameters, int caller){
-        int returnCode
-        returnCode = o.&"$methodName" ( parameters)
-        if ( returnCode < 0){
-            unexpectedReturnCode (callerMessages[caller], methodName, parameters, returnCode)
-            return returnCode  // will never be invoked as system exits on error
-        }
-        else
-            return returnCode
-    }
+	/**
+	 * @param o
+	 * @param methodName
+	 * @param parameters
+	 * @param caller
+	 * @return
+	 */
+	int callUserMethod ( Object o, String methodName, List parameters, int caller){
+		int returnCode
+		returnCode = o.&"$methodName" ( parameters)
+		if ( returnCode < 0){
+			unexpectedReturnCode (callerMessages[caller], methodName, parameters, returnCode)
+			return returnCode  // will never be invoked as system exits on error
+		}
+		else
+			return returnCode
+	}
 
-    /**
+	/**
      * @param o
      * @param methodName
      * @param caller

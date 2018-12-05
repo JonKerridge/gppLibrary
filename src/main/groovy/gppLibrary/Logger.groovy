@@ -36,62 +36,7 @@ class Logger implements Cloneable, Serializable {
     static void initLogChannel(ChannelOutput loggingChan) {
         logChan = loggingChan
     }
-/*
-	static List startLog(String logID, long time) {
-        List logData = [time, startTag, logID, " "]
-        if (logChan != null) logChan.write(logData)
-		return logData
-	}
 
-	static List initLog(String logID, long time) {
-        List logData = [time, initTag, logID, " "]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static List inputEvent(String logID, long time, Object o) {
-        List logData = [time, inputTag, logID, o]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static List outputEvent(String logID, long time, Object o) {
-        List logData = [time, outputTag, logID, o]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static List endEvent(String logID, long time) {
-        List logData = [time, endTag, logID, " "]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static List workStartEvent(String logID, long time) {
-        List logData = [time, workStartTag, logID, " "]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static List workEndEvent(String logID, long time) {
-        List logData = [time, workEndTag, logID, " "]
-        if (logChan != null) logChan.write(logData)
-        return logData
-	}
-
-	static void produceLog ( List log, String logFileName ){
-		assert logFileName != "" : "LogFileName must be specified"
-        def file = new File(logFileName + "log.csv")
-        if (file.exists()) file.delete()
-        file.withPrintWriter { writer ->
-            log.each { phase ->
-                phase.each{ List entry ->
-                    writer.println "${entry[0]}, ${entry[1]}, ${entry[2]}, ${entry[3]}"
-                }//phase
-            } //log
-		} // end file
-	} // produceLog
-*/
 /**
  *
  * @param logID the name of the log phase

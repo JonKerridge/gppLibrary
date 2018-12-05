@@ -1,8 +1,9 @@
 group 'gppLibrary'
-version '1.0.0-alpha-6'
+version '1.0.0-alpha-7'
 //version 5 introduces the logging visualiser
 // and version 6 removes the logging output from everywhere else 
 // making Termination simpler because no log info saved in processes
+// version 7 includes EmitWithFeedback and FeedbackBool and test 39 and 40
 apply plugin: 'groovy'
 apply plugin: 'java'
 
