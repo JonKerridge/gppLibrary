@@ -27,19 +27,19 @@ class Server extends DataClass implements CSProcess{
     void runMethod() {
         boolean running = true
         Object inputObject = new Object()
-        int returnCode = -1
+        int returnCode
         int finished = 0
         Class serverClass = Class.forName(serverDetails.lName)
         def server = serverClass.newInstance()
         //initialise the server class
-        returnCode = callUserMethod(server, serverDetails.lInitMethod, serverDetails.lInitData, 29) 
+        callUserMethod(server, serverDetails.lInitMethod, serverDetails.lInitData, 29)
         // now read all the initialised individuals into server
         for ( c in 0 ..< clients) {
             def initialPopulation = (UniversalRequest) ((ChannelInput)request[c]).read()
             // now add the enclosed individuals to the population
             assert (initialPopulation.tag == writeRequest) : 
                 "Server expecting writeRequest UniversalRequest"
-            returnCode = callUserMethod(server, addIndividualsMethod, initialPopulation.individuals, 30)
+            callUserMethod(server, addIndividualsMethod, initialPopulation.individuals, 30)
         }  
         // now send signal in parallel to the clients to start main processing loop
         def startSignal = []
@@ -65,7 +65,7 @@ class Server extends DataClass implements CSProcess{
                 assert (input.tag == writeRequest): 
                     "Client-Server: Server Process expecting request to write evolved children into population"
       //          input.individuals.each{println "$it"}
-                returnCode = callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
             }
             // see if we are terminating
             running = server.&"$carryOnFunction"()  // returns false when loop should terminate
@@ -83,12 +83,12 @@ class Server extends DataClass implements CSProcess{
                 terminated = terminated + 1 // wait until all clients are awaiting a response
             }
             else { // must be an evolved child being returned
-                returnCode = callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
+                callUserMethod(server, incorporateChildrenMethod, input.individuals, 31)
             }
             if (terminated == clients) running = false
         }
         // now do server finalisation
-        returnCode = callUserMethod(server, serverDetails.lFinaliseMethod, serverDetails.lFinaliseData, 32)
+        callUserMethod(server, serverDetails.lFinaliseMethod, serverDetails.lFinaliseData, 32)
         // now send signal in parallel to the clients to terminate main processing loop
         def endSignal = []
         for ( i in 0..< clients) endSignal << new UniversalTerminator()

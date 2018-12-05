@@ -59,7 +59,6 @@ class Worker extends DataClass implements CSProcess {
     @CompileStatic
     void runMethod() {
         int returnCode
-        returnCode = -1
         int workerType
         workerType = 0
         if (outData) {
@@ -75,7 +74,7 @@ class Worker extends DataClass implements CSProcess {
         if ( lDetails != null){
             Class workerClass = Class.forName(lDetails.lName)
             wc = workerClass.newInstance()
-            returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
+            callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
         }
         boolean running
         running = true
@@ -88,7 +87,7 @@ class Worker extends DataClass implements CSProcess {
                 running = false
             }
             else {
-                returnCode = callUserMethod(inputObject, function, [dataModifier, wc], 1)
+                callUserMethod(inputObject, function, [dataModifier, wc], 1)
                 switch (workerType) {
                     case 1:
                         output.write(inputObject)
@@ -103,7 +102,7 @@ class Worker extends DataClass implements CSProcess {
             }
         } // end of running loop
         if ((workerType == 3) || (workerType == 4)) {
-            returnCode = callUserMethod(wc, lDetails.lFinaliseMethod, lDetails.lFinaliseData, 2)
+            callUserMethod(wc, lDetails.lFinaliseMethod, lDetails.lFinaliseData, 2)
             switch (workerType) {
                 case 3:
                     output.write(wc)
@@ -128,7 +127,6 @@ class Worker extends DataClass implements CSProcess {
 
 			Logger.startLog(logPhaseName, timer.read())
             int returnCode
-            returnCode = -1
             int workerType
             workerType = 0
             if (outData) {
@@ -144,7 +142,7 @@ class Worker extends DataClass implements CSProcess {
             if ( lDetails != null){
                 Class workerClass = Class.forName(lDetails.lName)
                 wc = workerClass.newInstance()
-                returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
+                callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 0)
             }
             boolean running
             running = true
@@ -160,7 +158,7 @@ class Worker extends DataClass implements CSProcess {
                 }
                 else {
                     Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
-                    returnCode = callUserMethod(inputObject, function, [dataModifier, wc], 1)
+                    callUserMethod(inputObject, function, [dataModifier, wc], 1)
                     switch (workerType) {
                         case 1:
                             output.write(inputObject)
@@ -177,7 +175,7 @@ class Worker extends DataClass implements CSProcess {
                 }
             } // end of running loop
             if ((workerType == 3) || (workerType == 4)) {
-                returnCode = callUserMethod(wc, lDetails.lFinaliseMethod, lDetails.lFinaliseData, 2)
+                callUserMethod(wc, lDetails.lFinaliseMethod, lDetails.lFinaliseData, 2)
                 switch (workerType) {
                     case 3:
                         output.write(wc)

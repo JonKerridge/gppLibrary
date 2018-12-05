@@ -34,9 +34,9 @@ class FeedbackObject extends DataClass implements CSProcess {
     @CompileStatic
     void runMethod() {
         Class FeedbackClass = Class.forName(fDetails.fName)
-        int returnCode = -1
+        int returnCode
         Object fc = FeedbackClass.newInstance()
-        returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData , 25)
+        callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData , 25)
         boolean running = true
         Object inputObject = new Object()
         while (running){
@@ -45,7 +45,7 @@ class FeedbackObject extends DataClass implements CSProcess {
                 running = false
             }
             else {
-                returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 26)
+                callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 26)
                     output.write(inputObject)
             }
         }
@@ -58,9 +58,9 @@ class FeedbackObject extends DataClass implements CSProcess {
         }
         else { // logging
     		Class FeedbackClass = Class.forName(fDetails.fName)
-    		int returnCode = -1
+    		int returnCode
     		Object fc = FeedbackClass.newInstance()
-            returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData , 25)
+            callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData , 25)
     		boolean running = true
     		Object inputObject = new Object()
             def timer = new CSTimer()
@@ -73,7 +73,7 @@ class FeedbackObject extends DataClass implements CSProcess {
     			}
     			else {
                     Logger.inputEvent(inputObject.getProperty(logPropertyName), timer.read())
-                    returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 26)
+                    callUserMethod(fc, fDetails.fMethod, [inputObject, feedback], 26)
                     output.write(inputObject)
                     Logger.outputEvent(outputObject.getProperty(logPropertyName), timer.read())
     			}			

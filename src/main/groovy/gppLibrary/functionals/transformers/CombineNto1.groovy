@@ -55,14 +55,14 @@ class CombineNto1 extends DataClass implements CSProcess {
 
     @CompileStatic
     void runMethod(){
-        int returnCode = -1
+        int returnCode
         Class lClass = Class.forName(localDetails.lName)
         def localClass = lClass.newInstance()
-        returnCode = callUserMethod(localClass, localDetails.lInitMethod, localDetails.lInitData, 16)
+        callUserMethod(localClass, localDetails.lInitMethod, localDetails.lInitData, 16)
 
         Class oClass = Class.forName(outDetails.lName)
         def outputObject = oClass.newInstance()
-        returnCode = callUserMethod(outputObject, outDetails.lInitMethod, outDetails.lInitData, 17)
+        callUserMethod(outputObject, outDetails.lInitMethod, outDetails.lInitData, 17)
 
         boolean running = true
         Object inputObject = new Object()
@@ -72,11 +72,11 @@ class CombineNto1 extends DataClass implements CSProcess {
                 running = false
             }
             else {
-                returnCode = callUserMethod(localClass, combineMethod, inputObject, 18)
+                callUserMethod(localClass, combineMethod, inputObject, 18)
                 // does this need data modifier as well???? if so
             }
         }
-        returnCode = callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
+        callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
         output.write(outputObject)
         output.write(inputObject)   // the Universal Terminator previously read
     }
@@ -93,14 +93,14 @@ class CombineNto1 extends DataClass implements CSProcess {
 
             Logger.startLog(logPhaseName, timer.read())
 
-    		int returnCode = -1
+    		int returnCode
     		Class lClass = Class.forName(localDetails.lName)
     		def localClass = lClass.newInstance()
-            returnCode = callUserMethod(localClass, localDetails.lInitMethod, localDetails.lInitData, 16)
+            callUserMethod(localClass, localDetails.lInitMethod, localDetails.lInitData, 16)
 
     		Class oClass = Class.forName(outDetails.lName)
     		def outputObject = oClass.newInstance()
-            returnCode = callUserMethod(outputObject, outDetails.lInitMethod, outDetails.lInitData, 17)
+            callUserMethod(outputObject, outDetails.lInitMethod, outDetails.lInitData, 17)
 
     		boolean running = true
     		Object inputObject = new Object()
@@ -113,11 +113,11 @@ class CombineNto1 extends DataClass implements CSProcess {
     			}
     			else {
                     Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
-                    returnCode = callUserMethod(localClass, combineMethod, inputObject, 18)
+                    callUserMethod(localClass, combineMethod, inputObject, 18)
                     // does this need data modifier as well???? if so
     			}
     		}
-            returnCode = callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
+            callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
     		output.write(outputObject)
             Logger.outputEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
 

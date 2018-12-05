@@ -60,7 +60,7 @@ class N_WayMerge extends DataClass implements CSProcess{
 		def dc = dataClass.newInstance()
 		while (running){
 			//returnCode = dc.&"$mergeChoice"(buffers)
-            returnCode = callUserMethod(dc, mergeChoice, buffers, 25)
+            returnCode = callUserFunction(dc, mergeChoice, buffers, 25)
 			if ((returnCode >= 0) && (returnCode < sources)) {
 				output.write(buffers[returnCode])
 				o =  ((ChannelInput)inputList[returnCode]).read()

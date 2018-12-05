@@ -54,14 +54,14 @@ class Collect extends DataClass implements CSProcess {
         Class resultsClass = Class.forName(rDetails.rName)
         def rc = resultsClass.newInstance()
         int returnCode //= -1
-        returnCode = callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
+        callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
         inputObject = input.read()
         while (!(inputObject instanceof UniversalTerminator)){
             collected += 1
-            returnCode = callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
+            callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
             inputObject = input.read()
         }
-        returnCode = callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
+        callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
 	}
 
    	void run(){
@@ -75,17 +75,17 @@ class Collect extends DataClass implements CSProcess {
             Class resultsClass = Class.forName(rDetails.rName)
             def rc = resultsClass.newInstance()
             int returnCode
-            returnCode = callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
+            callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
             Logger.initLog(logPhaseName, timer.read())
             inputObject = input.read()
             while (!(inputObject instanceof UniversalTerminator)){
                 Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                 collected += 1
-                returnCode = callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
+                callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
                 inputObject = input.read()
             }
             Logger.workStartEvent(logPhaseName, timer.read())
-            returnCode = callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
+            callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)
             Logger.workEndEvent(logPhaseName, timer.read())
             Logger.endEvent(logPhaseName, timer.read())
             visLogChan.write(new UniversalTerminator())

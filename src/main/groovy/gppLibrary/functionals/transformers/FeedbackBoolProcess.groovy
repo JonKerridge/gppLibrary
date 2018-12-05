@@ -28,9 +28,9 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
     @CompileStatic
     void runMethod() {
         Class FeedbackClass = Class.forName(fDetails.fName)
-        int returnCode = -1
+        int returnCode
         Object fc = FeedbackClass.newInstance()
-        returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
+        callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
         Object inputObject = new Object()
         boolean running = true
         boolean limitReached = false
@@ -45,7 +45,7 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
                 running = false
                 dataEnded = true
             } else {
-                returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject], 23)
+                returnCode = callUserFunction(fc, fDetails.fMethod, [inputObject], 23)
                 if (returnCode == normalContinuation) {
 //                    println "FbBool continuing writing $inputObject"
                     output.write(inputObject)
@@ -73,7 +73,7 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
                 dataEnded = true
             } else {
                 // have to check if any object has a value less than limit
-                returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject], 23)
+                returnCode = callUserFunction(fc, fDetails.fMethod, [inputObject], 23)
                 if (returnCode == normalContinuation) {
 //                    println "FbBool clearing writing within limit $inputObject"
                     output.write(inputObject)
@@ -104,9 +104,9 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
             def timer = new CSTimer()
             Logger.startLog(logPhaseName, timer.read())
             Class FeedbackClass = Class.forName(fDetails.fName)
-            int returnCode = -1
+            int returnCode
             Object fc = FeedbackClass.newInstance()
-            returnCode = callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
+            callUserMethod(fc, fDetails.fInitMethod, fDetails.fInitData, 22)
             Object inputObject = new Object()
             boolean running = true
             boolean limitReached = false
@@ -123,7 +123,7 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
                     dataEnded = true
                 } else {
                     Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
-                    returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject], 23)
+                    returnCode = callUserFunction(fc, fDetails.fMethod, [inputObject], 23)
                     if (returnCode == normalContinuation) {
 //                    println "FbBool continuing writing $inputObject"
                         output.write(inputObject)
@@ -153,7 +153,7 @@ class FeedbackBoolProcess extends DataClass implements CSProcess {
                 } else {
                     Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
                     // have to check if any object has a value less than limit
-                    returnCode = callUserMethod(fc, fDetails.fMethod, [inputObject], 23)
+                    returnCode = callUserFunction(fc, fDetails.fMethod, [inputObject], 23)
                     if (returnCode == normalContinuation) {
 //                    println "FbBool clearing writing within limit $inputObject"
                         output.write(inputObject)

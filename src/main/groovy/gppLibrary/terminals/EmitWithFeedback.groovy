@@ -39,9 +39,9 @@ class EmitWithFeedback extends DataClass implements CSProcess {
     void runMethod() {
         Class EmitClass = Class.forName(eDetails.dName)
         boolean running = true
-        int returnCode = -1
+        int returnCode
         Object ecInit = EmitClass.newInstance()
-        returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 20)
+        callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 20)
 
         def guards = [feedback, new Skip()]
         def alt = new ALT(guards)
@@ -55,7 +55,7 @@ class EmitWithFeedback extends DataClass implements CSProcess {
                     break
                 case 1: // skip guard
                     Object ec = EmitClass.newInstance()
-                    returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
+                    returnCode = callUserFunction(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
 //                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
                     if (returnCode == normalContinuation) {
 //                        println "\t\tEWF: continuing $ec"
@@ -86,9 +86,9 @@ class EmitWithFeedback extends DataClass implements CSProcess {
             Logger.startLog(logPhaseName, timer.read())
             Class EmitClass = Class.forName(eDetails.dName)
             boolean running = true
-            int returnCode = -1
+            int returnCode
             Object ecInit = EmitClass.newInstance()
-            returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 20)
+            callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 20)
             Logger.initLog(logPhaseName, timer.read())
             def guards = [feedback, new Skip()]
             def alt = new ALT(guards)
@@ -102,7 +102,7 @@ class EmitWithFeedback extends DataClass implements CSProcess {
                         break
                     case 1: // skip guard
                         Object ec = EmitClass.newInstance()
-                        returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
+                        returnCode = callUserFunction(ec, eDetails.dCreateMethod, eDetails.dCreateData, 24)
 //                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
                         if (returnCode == normalContinuation) {
 //                        println "\t\tEWF: continuing $ec"

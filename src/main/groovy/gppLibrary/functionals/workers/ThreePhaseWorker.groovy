@@ -61,11 +61,11 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
 
     @CompileStatic
     void runMethod() {
-        int returnCode = -1
+        int returnCode
         def wc = null
         Class workerClass = Class.forName(lDetails.lName)
         wc = workerClass.newInstance()
-        returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 9)
+        callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 9)
         boolean running = true
         Object inputObject = new Object()
         while (running){ // first phase: inputting data into local worker
@@ -73,11 +73,11 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
             if ( inputObject instanceof UniversalTerminator)
                 running = false
             else {
-                returnCode = callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
+                callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
             }
         }
         // now invoke the second phase function on the local worker
-        returnCode = callUserMethod(wc, workMethod, 11)
+        callUserMethod(wc, workMethod, 11)
         //now output the data from the local worker class
         running = true
         Object out = new Object()
@@ -102,11 +102,11 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
             def timer = new CSTimer()
 
             Logger.startLog(logPhaseName, timer.read())
-            int returnCode = -1
+            int returnCode
             def wc = null
             Class workerClass = Class.forName(lDetails.lName)
             wc = workerClass.newInstance()
-            returnCode = callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 9)
+            callUserMethod(wc, lDetails.lInitMethod, lDetails.lInitData, 9)
 
             boolean running = true
             Object inputObject = new Object()
@@ -118,12 +118,12 @@ class ThreePhaseWorker extends DataClass implements CSProcess {
                     running = false
                 else {
                     Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
-                    returnCode = callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
+                    callUserMethod(wc, inputMethod, [dataModifier, inputObject], 10 )
                 }
             }
             // now invoke the second phase function on the local worker
             Logger.workStartEvent(logPhaseName,  timer.read())
-            returnCode = callUserMethod(wc, workMethod, 11)
+            callUserMethod(wc, workMethod, 11)
             //now output the data from the local worker class
             Logger.workEndEvent(logPhaseName,  timer.read())
             running = true
