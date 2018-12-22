@@ -51,9 +51,7 @@
  * Test40 EmitWithFeedback ofa AnyGroupAny afo FeedbackBool Collect
  *
  * <p>
- * Author Information, Copyright and License are held in the file
- * <a href="CopyrightandLicense">Copyright and License</a>
- *
+  *
   */
 
 package gppJunitTests;

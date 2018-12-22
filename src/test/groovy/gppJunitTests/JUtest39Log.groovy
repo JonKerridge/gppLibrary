@@ -3,7 +3,7 @@ package gppJunitTests
 import gppLibrary.DataDetails
 import gppLibrary.FeedbackDetails
 import gppLibrary.ResultDetails
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackProcess
 import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
@@ -33,7 +33,7 @@ class JUtest39Log {
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
 
-        def limit = 15
+        def limit = 25  // 15, 19, 20, 21, 25
 
         def er = new TestExtract()
 
@@ -49,10 +49,13 @@ class JUtest39Log {
                 rFinaliseData: [er])
 
         def feedbackDetails = new FeedbackDetails(
-                fName: FeedbackData.getName(),
-                fInitMethod: FeedbackData.fbInit,
+                fName: FeedbackDefinition.getName(),
+                fInitMethod: FeedbackDefinition.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackDefinition.fbEvalMethod,
+                fObjectName: "FeedbackDefinition",
+                fCreateMethod: FeedbackDefinition.fbCreateMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
@@ -68,7 +71,7 @@ class JUtest39Log {
                 logPhaseName: "work",
                 logPropertyName: "data" )
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackProcess(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),

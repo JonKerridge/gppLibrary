@@ -11,35 +11,34 @@ import jcsp.lang.ChannelOutput
 import jcsp.lang.One2OneChannel
 
 @CompileStatic
-class FeedbackBool extends DataClass implements CSProcess {
+class FeedbackProcess extends DataClass implements CSProcess {
 
     ChannelInput input
     ChannelOutput output
+    ChannelInput request
     ChannelOutput feedback
     FeedbackDetails fDetails
 
     String logPhaseName = ""
     String logPropertyName = ""
 
-    One2OneChannel requestChan = Channel.one2one()
-    One2OneChannel responseChan = Channel.one2one()
 
-    void run() {
-        def check = new FeedbackChecker(
+    void run(){
+        One2OneChannel sendChan = Channel.one2one()
+        def fbManager = new FbManager(
+                request: request,
                 feedback: feedback,
-                response: responseChan.in(),
-                request: requestChan.out())
-        def process = new FeedbackBoolProcess(
+                sendChan: sendChan.in()
+        )
+        def fbProcess = new FbProcess(
                 input: input,
                 output: output,
-                request: requestChan.in(),
-                response: responseChan.out(),
-                fDetails: fDetails,
+                sendChan: sendChan.out(),
                 logPhaseName: logPhaseName,
-                logPropertyName: logPropertyName)
-
-        new PAR([check, process]).run()
+                logPropertyName: logPropertyName,
+                fDetails: fDetails
+        )
+        new PAR([fbManager, fbProcess]).run()
     }
-
 
 }

@@ -6,7 +6,8 @@ import gppLibrary.ResultDetails
 import gppLibrary.connectors.reducers.AnyFanOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.functionals.groups.AnyGroupAny
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackProcess
+import gppLibrary.functionals.transformers.FeedbackProcess
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -23,11 +24,12 @@ class JUtest40 {
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
+        def chan5 = Channel.one2one()
 
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
 
-        int limit = 15 // tested with 10, 15, 19, 20, 21, 25
+        int limit = 20 // tested with 10, 15, 19, 20, 21, 25
         int workers = 3
 
         def er = new TestExtract()
@@ -47,12 +49,17 @@ class JUtest40 {
                 fName: FeedbackData.getName(),
                 fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackData.fbEvalMethod,
+//                fObjectName: FeedbackData.getName(),
+                fCreateMethod: FeedbackData.fbCreateMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
                 feedback: chan4.in(),
-                eDetails: emitterDetails )
+                request: chan5.out(),
+                eDetails: emitterDetails,
+                emitFeedbackMethod: TestData.emitFeedbackMethod)
 
         def ofa = new OneFanAny(destinations: workers,
                 input: chan1.in(),
@@ -69,9 +76,10 @@ class JUtest40 {
                 inputAny: anyChan2.in(),
                 output: chan2.out())
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackProcess(
                 input: chan2.in(),
                 output: chan3.out(),
+                request: chan5.in(),
                 feedback: chan4.out(),
                 fDetails: feedbackDetails)
 

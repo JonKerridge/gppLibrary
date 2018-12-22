@@ -23,16 +23,16 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class DataDetails implements Serializable, Cloneable {
-	String dName = ""
-	String dInitMethod = ""
-	List dInitData = null
-	String dCreateMethod = ""
-	List dCreateData = null
+    String dName = ""
+    String dInitMethod = ""
+    List dInitData = null
+    String dCreateMethod = ""
+    List dCreateData = null
 /*
  * In some cases a local class is required, for example, EmitWithLocal
  * thus the following properties will only be use rarely
  */
-	String lName = ""
-	String lInitMethod = ""
-	List lInitData = null
+    String lName = ""
+    String lInitMethod = ""
+    List lInitData = null
 }

@@ -6,7 +6,7 @@ import gppLibrary.ResultDetails
 import gppLibrary.connectors.reducers.AnyFanOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.functionals.groups.AnyGroupAny
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackProcess
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -55,10 +55,13 @@ class JUtest40Log {
                 rFinaliseData: [er])
 
         def feedbackDetails = new FeedbackDetails(
-                fName: FeedbackData.getName(),
-                fInitMethod: FeedbackData.fbInit,
+                fName: FeedbackDefinition.getName(),
+                fInitMethod: FeedbackDefinition.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackDefinition.fbEvalMethod,
+                fObjectName: "FeedbackDefinition",
+                fCreateMethod: FeedbackDefinition.fbCreateMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
@@ -84,7 +87,7 @@ class JUtest40Log {
                 inputAny: anyChan2.in(),
                 output: chan2.out())
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackProcess(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),

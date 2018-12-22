@@ -50,6 +50,8 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
         "Evolutionary: Server failed to incorporate a new child",              //31
         "Evolutionary: Server failed to finalise correctly",                   //32
         "Evolutionary: Client process failed to create new individual",        //33
+		"EmitWithFeedback: error during feedbackMethod call: "	,				 //34
+		"FeedbackProcess: error during fbCreateMethod call:",					 //35
 	]
 
 	/**
