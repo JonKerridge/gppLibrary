@@ -9,6 +9,7 @@ class FeedbackData extends DataClass {
     static String fbCreateMethod = "createFbObject"
     static String fbInit = "feedbackInit"
     static String fbEvalMethod = "evalMethod"
+    static String emitFeedbackMethod = "feedback"
     static int limit = 0
 
     boolean limitReached
@@ -35,6 +36,15 @@ class FeedbackData extends DataClass {
 //            println "FbDef: evalMethod continue ${td.instanceNumber} limit = $limit"
             return normalContinuation
         }
+    }
+
+    int feedback (List p){
+        TestData td = p[0]
+//        println "TestData: feedback method - ${td.instanceNumber}"
+        if (limitReached)
+            return 0    // stop emitting new objects
+        else
+            return 1    // keep going
     }
 
 

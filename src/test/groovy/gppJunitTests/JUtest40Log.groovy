@@ -22,7 +22,7 @@ import gppLibrary.LoggingVisualiser
 class JUtest40Log {
 
     @Test
-    public void test() {
+    void test() {
         // log definitions
         def logChan = Channel.any2one()
         Logger.initLogChannel(logChan.out())
@@ -34,6 +34,7 @@ class JUtest40Log {
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
+        def chan5 = Channel.one2one()
 
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
@@ -55,18 +56,18 @@ class JUtest40Log {
                 rFinaliseData: [er])
 
         def feedbackDetails = new FeedbackDetails(
-                fName: FeedbackDefinition.getName(),
-                fInitMethod: FeedbackDefinition.fbInit,
+                fName: FeedbackData.getName(),
+                fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
-                fEvalMethod: FeedbackDefinition.fbEvalMethod,
-                fObjectName: "FeedbackDefinition",
-                fCreateMethod: FeedbackDefinition.fbCreateMethod
+                fEvalMethod: FeedbackData.fbEvalMethod,
+                fCreateMethod: FeedbackData.fbCreateMethod
         )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
                 feedback: chan4.in(),
                 eDetails: emitterDetails,
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod,
                 logPhaseName: "emit",
                 logPropertyName: "instanceNumber"  )
 
@@ -91,6 +92,7 @@ class JUtest40Log {
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),
+                request: chan5.in(),
                 fDetails: feedbackDetails,
                 logPhaseName: "fback",
                 logPropertyName: "data" )

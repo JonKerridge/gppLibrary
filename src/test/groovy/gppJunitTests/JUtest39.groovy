@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue
 class JUtest39 {
 
     @Test
-    public void test() {
+    void test() {
         def chan1 = Channel.one2one()
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
@@ -53,7 +53,8 @@ class JUtest39 {
                 fInitData: [limit],
                 fEvalMethod: FeedbackData.fbEvalMethod,
 //                fObjectName: FeedbackData.getName(),
-                fCreateMethod: FeedbackData.fbCreateMethod
+                fCreateMethod: FeedbackData.fbCreateMethod,
+//                emitFeedbackMethod: FeedbackData.emitFeedbackMethod
         )
 
         def emitter = new EmitWithFeedback(
@@ -61,7 +62,8 @@ class JUtest39 {
                 feedback: chan4.in(),
                 request: chan5.out(),
                 eDetails: emitterDetails,
-                emitFeedbackMethod: TestData.emitFeedbackMethod)
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod
+                )
 
         def worker = new Worker(
                 input: chan1.in(),

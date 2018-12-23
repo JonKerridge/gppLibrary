@@ -43,7 +43,7 @@ class EmitWithFeedback extends DataClass implements CSProcess {
     ChannelOutput request
     ChannelInput feedback
     DataDetails eDetails
-    String emitFeedbackMethod   // must be a method defined in the eDetails.dName object
+    String emitFeedbackMethod   // must be a method defined in the feedback object read from feedback channel
 
     String logPhaseName = ""
     String logPropertyName = ""
@@ -80,7 +80,10 @@ class EmitWithFeedback extends DataClass implements CSProcess {
                     }
                     break
                 default:
-                    returnCode = callUserFunction(ecInit, emitFeedbackMethod, [fbObject], 34)
+                    //TO DO make this a method of fbObject
+//                    println "EWF default case: $fbObject, $emitFeedbackMethod, $ecInit"
+//                    returnCode = callUserFunction(ecInit, emitFeedbackMethod, [fbObject], 34)
+                    returnCode = callUserFunction(fbObject, emitFeedbackMethod, [ecInit], 34)
 //                    println "\tEWF: received feedback - $fbObject, $returnCode"
                     // if returnCode = 0 stop generating
                     if (returnCode == 0) {

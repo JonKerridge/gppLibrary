@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue
 class JUtest40 {
 
     @Test
-    public void test() {
+    void test() {
         def chan1 = Channel.one2one()
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
@@ -29,7 +29,7 @@ class JUtest40 {
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
 
-        int limit = 20 // tested with 10, 15, 19, 20, 21, 25
+        int limit = 19 // tested with 10, 15, 19, 20, 21, 25
         int workers = 3
 
         def er = new TestExtract()
@@ -50,7 +50,6 @@ class JUtest40 {
                 fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
                 fEvalMethod: FeedbackData.fbEvalMethod,
-//                fObjectName: FeedbackData.getName(),
                 fCreateMethod: FeedbackData.fbCreateMethod
         )
 
@@ -59,7 +58,8 @@ class JUtest40 {
                 feedback: chan4.in(),
                 request: chan5.out(),
                 eDetails: emitterDetails,
-                emitFeedbackMethod: TestData.emitFeedbackMethod)
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod
+        )
 
         def ofa = new OneFanAny(destinations: workers,
                 input: chan1.in(),
