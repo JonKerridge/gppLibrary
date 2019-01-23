@@ -3,7 +3,7 @@ package gppJunitTests
 import gppLibrary.DataDetails
 import gppLibrary.FeedbackDetails
 import gppLibrary.ResultDetails
-import gppLibrary.functionals.transformers.FeedbackProcess
+import gppLibrary.functionals.transformers.FeedbackSensor
 import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
@@ -70,7 +70,7 @@ class JUtest39 {
                 output: chan2.out(),
                 function: TestData.f1 )
 
-        def feedBack = new FeedbackProcess(
+        def feedBack = new FeedbackSensor(
                 input: chan2.in(),
                 output: chan3.out(),
                 request: chan5.in(),

@@ -6,7 +6,7 @@ import gppLibrary.ResultDetails
 import gppLibrary.connectors.reducers.AnyFanOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.functionals.groups.AnyGroupAny
-import gppLibrary.functionals.transformers.FeedbackProcess
+import gppLibrary.functionals.transformers.FeedbackSensor
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -88,7 +88,7 @@ class JUtest40Log {
                 inputAny: anyChan2.in(),
                 output: chan2.out())
 
-        def feedBack = new FeedbackProcess(
+        def feedBack = new FeedbackSensor(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),

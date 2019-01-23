@@ -11,7 +11,7 @@ import jcsp.lang.ChannelOutput
 import jcsp.lang.One2OneChannel
 
 @CompileStatic
-class FeedbackProcess extends DataClass implements CSProcess {
+class FeedbackSensor extends DataClass implements CSProcess {
 
     ChannelInput input
     ChannelOutput output

@@ -12,7 +12,7 @@ import jcsp.lang.*
 /**
  * The EmitWithFeedback process is used to send data objects of type dataClassName to the rest of the
  * parallel structure; it writes output data objects to one output channel.
- * The process outputs a signal to a {@link gppLibrary.functionals.transformers.FeedbackProcess} to determine whether
+ * The process outputs a signal to a {@link gppLibrary.functionals.transformers.FeedbackSensor} to determine whether
  * a feedback data object is available.  If not, the process emits another data object.
  * If a feedback object is available it is processed by the emitFeedbackMethod such that if the method returns zero
  * the EmitWithFeedback process terminates in such a manner that the complete process terminates correctly.
