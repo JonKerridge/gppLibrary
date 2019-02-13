@@ -42,18 +42,18 @@ class EmitFromInput extends DataClass implements CSProcess {
 
     @CompileStatic
     void runMethod(){
-        int returnCode = -1
+        int returnCode
         Class LocalClass = Class.forName(eDetails.lName)
         Object lcInit = LocalClass.newInstance()
         def lcBase = input.read()
         assert (lcBase.getClass().isInstance(lcInit)) : "EmitFromInput: input Class not ${eDetails.lName}"
-        returnCode = callUserMethod(lcInit, eDetails.lInitMethod, eDetails.lInitData, 21)
+        callUserMethod(lcInit, eDetails.lInitMethod, eDetails.lInitData, 21)
 //        lcInit.&"${eDetails.lInitMethod}"(eDetails.lInitData)
         boolean running = true
         while (running){
             Object lc = LocalClass.newInstance()
-            returnCode = callUserMethod(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
-            if ( returnCode == DataClassInterface.normalContinuation){
+            returnCode = callUserFunction(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
+            if ( returnCode == normalContinuation){
                 output.write(lc)
             }
             else
@@ -79,7 +79,7 @@ class EmitFromInput extends DataClass implements CSProcess {
     		def lcBase = input.read()
             assert (lcBase.getClass().isInstance(lcInit)) : "EmitFromInput: input Class not ${eDetails.lName}"
 
-            returnCode = callUserMethod(lcInit, eDetails.lInitMethod, eDetails.lInitData, 21)
+            callUserMethod(lcInit, eDetails.lInitMethod, eDetails.lInitData, 21)
 //            lcInit.&"${eDetails.lInitMethod}"(eDetails.lInitData)
     		boolean running = true
 
@@ -87,8 +87,8 @@ class EmitFromInput extends DataClass implements CSProcess {
 
     		while (running){
     			Object lc = LocalClass.newInstance()
-                returnCode = callUserMethod(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
-                if ( returnCode == DataClassInterface.normalContinuation){
+                returnCode = callUserFunction(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
+                if ( returnCode == normalContinuation){
                     output.write(lc)
                     Logger.outputEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
                 }

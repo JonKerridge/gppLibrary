@@ -50,6 +50,8 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
         "Evolutionary: Server failed to incorporate a new child",              //31
         "Evolutionary: Server failed to finalise correctly",                   //32
         "Evolutionary: Client process failed to create new individual",        //33
+		"EmitWithFeedback: error during feedbackMethod call: "	,				 //34
+		"FeedbackSensor: error during fbCreateMethod call:",					 //35
 	]
 
 	/**
@@ -64,7 +66,7 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
 		returnCode = o.&"$methodName" ( parameters)
 		if ( returnCode < 0){
 			unexpectedReturnCode (callerMessages[caller], methodName, parameters, returnCode)
-//			return returnCode  // will never be invoked as system exits on error
+//			the system exits on error
 		}
 		else
 			return returnCode
@@ -78,15 +80,13 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
 	 * @param caller
 	 * @return
 	 */
-	int callUserMethod ( Object o, String methodName, List parameters, int caller){
+	void callUserMethod ( Object o, String methodName, List parameters, int caller){
 		int returnCode
 		returnCode = o.&"$methodName" ( parameters)
 		if ( returnCode < 0){
 			unexpectedReturnCode (callerMessages[caller], methodName, parameters, returnCode)
-			return returnCode  // will never be invoked as system exits on error
+//			the system exits on error
 		}
-		else
-			return returnCode
 	}
 
 	/**
@@ -95,15 +95,13 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
      * @param caller
      * @return
      */
-    int callUserMethod ( Object o, String methodName, int caller){
+    void callUserMethod ( Object o, String methodName, int caller){
         int returnCode
         returnCode = o.&"$methodName" ( )
         if ( returnCode < 0){
             unexpectedReturnCode (callerMessages[caller], methodName, null, returnCode)
-            return returnCode  // will never be invoked as system exits on error
+//			the system exits on error
         }
-        else
-            return returnCode
     }
     /**
      * @param o
@@ -112,15 +110,13 @@ class DataClass implements DataClassInterface, Serializable, Cloneable {
      * @param caller
      * @return
      */
-    int callUserMethod ( Object o, String methodName, Object parameter, int caller){
+    void callUserMethod ( Object o, String methodName, Object parameter, int caller){
         int returnCode
         returnCode = o.&"$methodName" ( parameter)
         if ( returnCode < 0){
             unexpectedReturnCode (callerMessages[caller], methodName, [parameter.toString()], returnCode)
-            return returnCode  // will never be invoked as system exits on error
+//			the system exits on error
         }
-        else
-            return returnCode
     }
 
 	/**

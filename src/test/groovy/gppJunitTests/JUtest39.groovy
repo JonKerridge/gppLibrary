@@ -3,7 +3,7 @@ package gppJunitTests
 import gppLibrary.DataDetails
 import gppLibrary.FeedbackDetails
 import gppLibrary.ResultDetails
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackSensor
 import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
@@ -16,11 +16,12 @@ import static org.junit.Assert.assertTrue
 class JUtest39 {
 
     @Test
-    public void test() {
+    void test() {
         def chan1 = Channel.one2one()
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
+        def chan5 = Channel.one2one()
 
         int limit = 15  // tested with 15, 19, 20, 21 and 25
 
@@ -37,25 +38,42 @@ class JUtest39 {
                 rFinaliseMethod: TestResult.finalise,
                 rFinaliseData: [er])
 
+//        def feedbackDetails = new FeedbackDetails(
+//                fName: FeedbackDefinition.getName(),
+//                fInitMethod: FeedbackDefinition.fbInit,
+//                fInitData: [limit],
+//                fEvalMethod: FeedbackDefinition.fbEvalMethod,
+//                fObjectName: FeedbackData.getName(),
+//                fCreateMethod: FeedbackData.fbCreateMethod
+//        )
+
         def feedbackDetails = new FeedbackDetails(
                 fName: FeedbackData.getName(),
                 fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackData.fbEvalMethod,
+//                fObjectName: FeedbackData.getName(),
+                fCreateMethod: FeedbackData.fbCreateMethod,
+//                emitFeedbackMethod: FeedbackData.emitFeedbackMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
                 feedback: chan4.in(),
-                eDetails: emitterDetails )
+                request: chan5.out(),
+                eDetails: emitterDetails,
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod
+                )
 
         def worker = new Worker(
                 input: chan1.in(),
                 output: chan2.out(),
                 function: TestData.f1 )
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackSensor(
                 input: chan2.in(),
                 output: chan3.out(),
+                request: chan5.in(),
                 feedback: chan4.out(),
                 fDetails: feedbackDetails)
 

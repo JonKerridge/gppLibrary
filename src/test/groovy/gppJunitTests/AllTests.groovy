@@ -76,9 +76,9 @@ result = JUnitCore.runClasses (
             JUtest38,
             JUtest38Log,
             JUtest39,
-            JUtest39Log,
+//            JUtest39Log,
             JUtest40,
-            JUtest40Log,
+//            JUtest40Log,
             )
 
 String message = "Ran: " + result.getRunCount() +

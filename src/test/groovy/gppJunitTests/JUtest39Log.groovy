@@ -3,7 +3,7 @@ package gppJunitTests
 import gppLibrary.DataDetails
 import gppLibrary.FeedbackDetails
 import gppLibrary.ResultDetails
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackSensor
 import gppLibrary.functionals.workers.Worker
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
@@ -20,7 +20,7 @@ import gppLibrary.LoggingVisualiser
 class JUtest39Log {
 
     @Test
-    public void test() {
+    void test() {
         // log definitions
         def logChan = Channel.any2one()
         Logger.initLogChannel(logChan.out())
@@ -32,8 +32,9 @@ class JUtest39Log {
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
+        def chan5 = Channel.one2one()
 
-        def limit = 15
+        def limit = 15  // 15, 19, 20, 21, 25
 
         def er = new TestExtract()
 
@@ -52,35 +53,44 @@ class JUtest39Log {
                 fName: FeedbackData.getName(),
                 fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackData.fbEvalMethod,
+                fCreateMethod: FeedbackData.fbCreateMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
                 feedback: chan4.in(),
+                request: chan5.out(),
                 eDetails: emitterDetails,
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod,
                 logPhaseName: "emit",
-                logPropertyName: "instanceNumber"  )
+                logPropertyName: "instanceNumber"
+        )
 
         def worker = new Worker(
                 input: chan1.in(),
                 output: chan2.out(),
                 function: TestData.f1,
                 logPhaseName: "work",
-                logPropertyName: "data" )
+                logPropertyName: "data"
+        )
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackSensor(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),
+                request: chan5.in(),
                 fDetails: feedbackDetails,
                 logPhaseName: "fback",
-                logPropertyName: "data" )
+                logPropertyName: "data"
+        )
 
         def collector = new Collect( input: chan3.in(),
                 rDetails: resultDetails,
                 logPhaseName: "collect",
                 logPropertyName: "data",
-                visLogChan: logChan.out())
+                visLogChan: logChan.out()
+        )
 
         PAR testParallel = new PAR([logVis, emitter, worker, feedBack, collector])
         testParallel.run()

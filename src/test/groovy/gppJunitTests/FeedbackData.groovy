@@ -6,24 +6,46 @@ import jcsp.lang.ChannelOutput
 
 @CompileStatic
 class FeedbackData extends DataClass {
+    static String fbCreateMethod = "createFbObject"
     static String fbInit = "feedbackInit"
-    static String feedbackMethod = "fMethod"
+    static String fbEvalMethod = "evalMethod"
+    static String emitFeedbackMethod = "feedback"
     static int limit = 0
+
+    boolean limitReached
+
+    int createFbObject (List p){
+        TestData td = p[0]
+        limitReached = true
+//        println "FbData: $limitReached, $td"
+        return completedOK
+    }
 
     int feedbackInit (List p){
         limit = p[0]
         return completedOK
     }
 
-    int fMethod (List p){
+    int evalMethod (List p){
         TestData td = p[0]
         if (td.instanceNumber > limit) {
-//            println "fMethod termination ${td.instanceNumber} limit = $limit"
+//            println "FbDef: evalMethod termination ${td.instanceNumber} limit = $limit"
             return normalTermination
         }
         else {
-//            println "fMethod continue ${td.instanceNumber} limit = $limit"
+//            println "FbDef: evalMethod continue ${td.instanceNumber} limit = $limit"
             return normalContinuation
         }
     }
+
+    int feedback (List p){
+        TestData td = p[0]
+//        println "TestData: feedback method - ${td.instanceNumber}"
+        if (limitReached)
+            return 0    // stop emitting new objects
+        else
+            return 1    // keep going
+    }
+
+
 }

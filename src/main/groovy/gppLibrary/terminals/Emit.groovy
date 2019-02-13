@@ -49,13 +49,13 @@ class Emit extends DataClass implements CSProcess {
     void runMethod() {
         Class EmitClass = Class.forName(eDetails.dName)
         boolean running = true
-        int returnCode = -1
+        int returnCode
         Object ecInit = EmitClass.newInstance()
-        returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 3)
+        callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 3)
 
         while (running){
             Object ec = EmitClass.newInstance()
-            returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
+            returnCode = callUserFunction(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
             if ( returnCode == normalContinuation)
                 output.write(ec)
             else
@@ -76,16 +76,16 @@ class Emit extends DataClass implements CSProcess {
             Logger.startLog(logPhaseName, timer.read())
             Class EmitClass = Class.forName(eDetails.dName)
             boolean running = true
-            int returnCode = -1
+            int returnCode
             Object ecInit = EmitClass.newInstance()
-            returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 3)
+            callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 3)
 
             Logger.initLog(logPhaseName, timer.read())
 
             while (running){
                 Object ec = EmitClass.newInstance()
-                returnCode = callUserMethod(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
-                if ( returnCode == DataClassInterface.normalContinuation)  {
+                returnCode = callUserFunction(ec, eDetails.dCreateMethod, eDetails.dCreateData, 4)
+                if ( returnCode == normalContinuation)  {
                     output.write(ec)
                     Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
                 }

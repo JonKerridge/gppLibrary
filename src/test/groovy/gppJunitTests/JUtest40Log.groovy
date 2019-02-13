@@ -6,7 +6,7 @@ import gppLibrary.ResultDetails
 import gppLibrary.connectors.reducers.AnyFanOne
 import gppLibrary.connectors.spreaders.OneFanAny
 import gppLibrary.functionals.groups.AnyGroupAny
-import gppLibrary.functionals.transformers.FeedbackBool
+import gppLibrary.functionals.transformers.FeedbackSensor
 import gppLibrary.terminals.Collect
 import gppLibrary.terminals.EmitWithFeedback
 import groovyJCSP.PAR
@@ -22,7 +22,7 @@ import gppLibrary.LoggingVisualiser
 class JUtest40Log {
 
     @Test
-    public void test() {
+    void test() {
         // log definitions
         def logChan = Channel.any2one()
         Logger.initLogChannel(logChan.out())
@@ -34,6 +34,7 @@ class JUtest40Log {
         def chan2 = Channel.one2one()
         def chan3 = Channel.one2one()
         def chan4 = Channel.one2one()
+        def chan5 = Channel.one2one()
 
         def anyChan1 = Channel.one2any()
         def anyChan2 = Channel.any2one()
@@ -58,12 +59,15 @@ class JUtest40Log {
                 fName: FeedbackData.getName(),
                 fInitMethod: FeedbackData.fbInit,
                 fInitData: [limit],
-                fMethod: FeedbackData.feedbackMethod )
+                fEvalMethod: FeedbackData.fbEvalMethod,
+                fCreateMethod: FeedbackData.fbCreateMethod
+        )
 
         def emitter = new EmitWithFeedback(
                 output: chan1.out(),
                 feedback: chan4.in(),
                 eDetails: emitterDetails,
+                emitFeedbackMethod: FeedbackData.emitFeedbackMethod,
                 logPhaseName: "emit",
                 logPropertyName: "instanceNumber"  )
 
@@ -84,10 +88,11 @@ class JUtest40Log {
                 inputAny: anyChan2.in(),
                 output: chan2.out())
 
-        def feedBack = new FeedbackBool(
+        def feedBack = new FeedbackSensor(
                 input: chan2.in(),
                 output: chan3.out(),
                 feedback: chan4.out(),
+                request: chan5.in(),
                 fDetails: feedbackDetails,
                 logPhaseName: "fback",
                 logPropertyName: "data" )

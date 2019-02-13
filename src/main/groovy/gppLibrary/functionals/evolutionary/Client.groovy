@@ -24,10 +24,10 @@ class Client extends DataClass implements CSProcess{
     void runMethod() {
         boolean running = true
         Object inputObject = new Object()
-        int returnCode = -1
+        int returnCode
         Class clientClass = Class.forName(clientDetails.lName)
         Object individualInit = clientClass.newInstance()
-        returnCode = callUserMethod(individualInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
+        callUserMethod(individualInit, clientDetails.lInitMethod, clientDetails.lInitData, 27)
         def initialise = new UniversalRequest(tag: writeRequest, count: initialPopulation)
         for ( p in 1 .. initialPopulation) {
             Object individual = clientClass.newInstance()

@@ -51,19 +51,19 @@ class EmitWithLocal extends DataClass implements CSProcess {
 
     @CompileStatic
     void runMethod() {
-        int returnCode = -1
+        int returnCode
         boolean running = true
         Class EmitClass = Class.forName(eDetails.dName)
         def lc = null
         Class LocalClass = Class.forName(eDetails.lName)
         lc = LocalClass.newInstance()
-        returnCode =callUserMethod(lc, eDetails.lInitMethod, eDetails.lInitData, 12)
+        callUserMethod(lc, eDetails.lInitMethod, eDetails.lInitData, 12)
         Object ecInit = EmitClass.newInstance()
-        returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 13)
+        callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 13)
         while (running){
             Object ec = EmitClass.newInstance()
-            returnCode = callUserMethod(ec, eDetails.dCreateMethod,  [lc, eDetails.dCreateData] , 14)
-            if ( returnCode == DataClassInterface.normalContinuation) {
+            returnCode = callUserFunction(ec, eDetails.dCreateMethod,  [lc, eDetails.dCreateData] , 14)
+            if ( returnCode == normalContinuation) {
                 output.write(ec)
             }
             else
@@ -84,22 +84,22 @@ class EmitWithLocal extends DataClass implements CSProcess {
 
             Logger.startLog(logPhaseName, timer.read())
 
-            int returnCode = -1
+            int returnCode
             boolean running = true
             Class EmitClass = Class.forName(eDetails.dName)
             def lc = null
             Class LocalClass = Class.forName(eDetails.lName)
             lc = LocalClass.newInstance()
-            returnCode =callUserMethod(lc, eDetails.lInitMethod, eDetails.lInitData, 12)
+            callUserMethod(lc, eDetails.lInitMethod, eDetails.lInitData, 12)
             Object ecInit = EmitClass.newInstance()
-            returnCode = callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 13)
+            callUserMethod(ecInit, eDetails.dInitMethod, eDetails.dInitData, 13)
 
             Logger.initLog(logPhaseName, timer.read())
 
             while (running){
                 Object ec = EmitClass.newInstance()
-                returnCode = callUserMethod(ec, eDetails.dCreateMethod, [lc, eDetails.dCreateData], 14)
-                if ( returnCode == DataClassInterface.normalContinuation) {
+                returnCode = callUserFunction(ec, eDetails.dCreateMethod, [lc, eDetails.dCreateData], 14)
+                if ( returnCode == normalContinuation) {
                     output.write(ec)
                     Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
                 }

@@ -24,7 +24,7 @@ class TestData extends DataClass {
     static String func3 = "func3"
     static String finaliseMethod = "finalise"
     static String combineMethod = "combine"
-    static String feedbackMethod = "feedback"
+//    static String emitFeedbackMethod = "feedback"
 
     int initClass ( List d){
         instances = d[0]
@@ -40,6 +40,15 @@ class TestData extends DataClass {
         cloneInstance = 1
         return completedOK
     }
+
+//    int feedback (List p){
+//        FeedbackData fd = p[0]
+////        println "TestData: feedback method - ${fd.limitReached}"
+//        if (fd.limitReached)
+//            return 0    // stop emitting new objects
+//        else
+//            return 1    // keep going
+//    }
 
     static int instance
     static int instances
@@ -80,7 +89,7 @@ class TestData extends DataClass {
 
     int doubleData(List p){
         data = 2 * data
-        timer.sleep(10)
+//        timer.sleep(10)
         return completedOK
     }
 
