@@ -102,7 +102,7 @@ class JUtest40Log {
         testParallel.run()
         testParallel.removeAllProcesses()
 
-        println "40Log: $er"
+        println "40Log : $er"
 
         assertTrue (er.dataSetCount == (limit))
         assertTrue (er.finalSum == 240)
