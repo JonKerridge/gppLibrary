@@ -32,7 +32,7 @@ class LoggingVisualiser implements CSProcess {
                terminated += 1
            else {
                writer.println "${((List) logEntry)[0]}, ${((List) logEntry)[1]}, ${((List) logEntry)[2]}, ${((List) logEntry)[3]}"
-               println "${((List) logEntry)[0]}, ${((List) logEntry)[1]}, ${((List) logEntry)[2]}, ${((List) logEntry)[3]}"
+//               println "${((List) logEntry)[0]}, ${((List) logEntry)[1]}, ${((List) logEntry)[2]}, ${((List) logEntry)[3]}"
            }
            if (collectors == terminated ) running = false
        }
