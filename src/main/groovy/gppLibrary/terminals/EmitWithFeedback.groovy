@@ -137,8 +137,15 @@ class EmitWithFeedback extends DataClass implements CSProcess {
 //                    returnCode = ec.&"${eDetails.dCreateMethod}"( eDetails.dCreateData )
                         if (returnCode == normalContinuation) {
 //                        println "\t\tEWF: continuing $ec"
+                            ///////////
+                            Logger.outputReadyEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
+                            ///////////
+
                             output.write(ec)
-                            Logger.outputEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
+
+                            ///////////
+                            Logger.outputCompleteEvent(logPhaseName, timer.read(), ec.getProperty(logPropertyName))
+                            ///////////
                         } else {
                             running = false
 //                        println "\t\tEWF: stopping in data gen part"

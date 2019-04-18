@@ -1,7 +1,6 @@
 package gppLibrary.terminals
 
 import gppLibrary.DataClass
-import gppLibrary.DataClassInterface
 import gppLibrary.LocalDetails
 import gppLibrary.Logger
 import gppLibrary.UniversalTerminator
@@ -88,9 +87,16 @@ class EmitFromInput extends DataClass implements CSProcess {
     		while (running){
     			Object lc = LocalClass.newInstance()
                 returnCode = callUserFunction(lc, eDetails.lCreateMethod, [lcBase, eDetails.lCreateData], 15)
-                if ( returnCode == normalContinuation){
+                if ( returnCode == normalContinuation) {
+                    //////
+                    Logger.outputReadyEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
+                    //////
+
                     output.write(lc)
-                    Logger.outputEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
+
+                    //////
+                    Logger.outputCompleteEvent(logPhaseName, timer.read(), lc.getProperty(logPropertyName))
+                    //////
                 }
                 else
                     running = false

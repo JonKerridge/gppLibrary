@@ -107,19 +107,35 @@ class CombineNto1 extends DataClass implements CSProcess {
 			Logger.initLog(logPhaseName, timer.read())
 			
     		while (running){
+
+                ////////
+                Logger.inputReadyEvent(logPhaseName, timer.read())
+                ////////
+
     			inputObject = input.read()
     			if ( inputObject instanceof UniversalTerminator){
     				running = false
     			}
     			else {
-                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
+                    ////////
+                    Logger.inputCompleteEvent(logPhaseName, timer.read(), inputObject.getProperty(inputLogPropertyName))
+                    ////////
+
                     callUserMethod(localClass, combineMethod, inputObject, 18)
                     // does this need data modifier as well???? if so
     			}
     		}
             callUserMethod(outputObject,outDetails.lFinaliseMethod, [localClass] , 19)
-    		output.write(outputObject)
-            Logger.outputEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
+
+            //////
+            Logger.outputReadyEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
+            //////
+
+            output.write(outputObject)
+
+            ////////
+            Logger.outputCompleteEvent(logPhaseName, timer.read(), outputObject.getProperty(outputLogPropertyName))
+            ////////
 
             // now write the terminating UT that was read previously with log data appended
             Logger.endEvent(logPhaseName, timer.read())

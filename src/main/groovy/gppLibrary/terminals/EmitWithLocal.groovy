@@ -1,7 +1,6 @@
 package gppLibrary.terminals
 
 import gppLibrary.DataClass
-import gppLibrary.DataClassInterface
 import gppLibrary.DataDetails
 import gppLibrary.Logger
 import gppLibrary.UniversalTerminator

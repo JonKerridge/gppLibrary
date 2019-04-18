@@ -1,12 +1,19 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
 group 'gppLibrary'
-version '1.0.0-alpha-8'
+version '1.0.0-alpha-9'
 //version 5 introduces the logging visualiser
 // and version 6 removes the logging output from everywhere else 
 // making Termination simpler because no log info saved in processes
 // version 7 includes EmitWithFeedback and FeedbackBool and test 39 and 40
 // version 8 is JDK 11 and groovy 3 alpha 4
+// version 9 is with JDK 12 and the Hendrie Visualiser
+
 apply plugin: 'groovy'
 apply plugin: 'java'
+
 
 //sourceCompatibility = 1.8
 
@@ -22,6 +29,11 @@ repositories {
     }
 }
 
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+mainClassName = "gppVis/Viualiser/org.openjfx.MainApp"
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:3.0.0-alpha-4'

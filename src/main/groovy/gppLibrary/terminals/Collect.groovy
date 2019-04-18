@@ -77,12 +77,26 @@ class Collect extends DataClass implements CSProcess {
             int returnCode
             callUserMethod(rc, rDetails.rInitMethod, rDetails.rInitData, 5 )
             Logger.initLog(logPhaseName, timer.read())
+
+            //////
+            Logger.inputReadyEvent(logPhaseName, timer.read())
+            //////
+
             inputObject = input.read()
             while (!(inputObject instanceof UniversalTerminator)){
-                Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                //////
+                Logger.inputCompleteEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                //////
+
                 collected += 1
                 callUserMethod(rc, rDetails.rCollectMethod, inputObject, 6)
                 inputObject = input.read()
+
+                //////
+                Logger.inputReadyEvent(logPhaseName, timer.read())
+                //////
+
             }
             Logger.workStartEvent(logPhaseName, timer.read())
             callUserMethod(rc, rDetails.rFinaliseMethod, rDetails.rFinaliseData, 7)

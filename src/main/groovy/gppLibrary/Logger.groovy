@@ -22,11 +22,16 @@ import jcsp.lang.ChannelOutput
 class Logger implements Cloneable, Serializable {
     static int startTag = 0
     static int initTag = 1
-    static int inputTag = 2
-    static int outputTag = 3
-    static int endTag = 4
-    static int workStartTag = 5
-    static int workEndTag = 6
+    //
+    static int inputReadyTag = 2
+    static int inputCompleteTag = 3
+    //
+    static int outputReadyTag = 4
+    static int outputCompleteTag = 5
+    //
+    static int endTag = 6
+    static int workStartTag = 7
+    static int workEndTag = 8
     static ChannelOutput logChan = null
 
 /**
@@ -63,9 +68,15 @@ class Logger implements Cloneable, Serializable {
  * @param time millisecond time tag generated
  * @param o the property value being tracked
  */
-    static void inputEvent(String logID, long time, Object o) {
-        logChan.write([time, inputTag, logID, o])
+    /////////
+    static void inputReadyEvent(String logID, long time) {
+        logChan.write([time, inputReadyTag, logID, " "])
     }
+
+    static void inputCompleteEvent(String logID, long time, Object o) {
+        logChan.write([time, inputCompleteTag, logID, o])
+    }
+    /////////
 
 /**
  *
@@ -73,9 +84,14 @@ class Logger implements Cloneable, Serializable {
  * @param time millisecond time tag generated
  * @param o the property value being tracked
  */
-    static void outputEvent(String logID, long time, Object o) {
-        logChan.write([time, outputTag, logID, o])
+    static void outputReadyEvent(String logID, long time, Object o) {
+        logChan.write([time, outputReadyTag, logID, o])
     }
+
+    static void outputCompleteEvent(String logID, long time, Object o) {
+        logChan.write([time, outputCompleteTag, logID, o])
+    }
+    /////////
 
 /**
  *

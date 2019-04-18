@@ -152,22 +152,49 @@ class Worker extends DataClass implements CSProcess {
             Logger.initLog(logPhaseName, timer.read())
 
             while (running){
+
+                //////
+                Logger.inputReadyEvent(logPhaseName, timer.read())
+                //////
+
                 inputObject = input.read()
                 if ( inputObject instanceof UniversalTerminator){
                     running = false
                 }
                 else {
-                    Logger.inputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                    //////
+                    Logger.inputCompleteEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                    //////
+
                     callUserMethod(inputObject, function, [dataModifier, wc], 1)
                     switch (workerType) {
                         case 1:
+
+                            //////
+                            Logger.outputReadyEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            //////
+
                             output.write(inputObject)
-                            Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                            //////
+                            Logger.outputCompleteEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            //////
+
                             break
                         case 2:
                             barrier.sync()
+
+                            //////
+                            Logger.outputReadyEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            //////
+
                             output.write(inputObject)
-                            Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                            //////
+                            Logger.outputCompleteEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+                            //////
+
                             break
                         default:
                             break
@@ -178,13 +205,31 @@ class Worker extends DataClass implements CSProcess {
                 callUserMethod(wc, lDetails.lFinaliseMethod, lDetails.lFinaliseData, 2)
                 switch (workerType) {
                     case 3:
+
+                        //////
+                        Logger.outputReadyEvent(logPhaseName, timer.read(), wc.getProperty(logPropertyName))
+                        //////
+
                         output.write(wc)
-                        Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                        //////
+                        Logger.outputCompleteEvent(logPhaseName, timer.read(), wc.getProperty(logPropertyName))
+                        //////
+
                         break
                     case 4:
                         barrier.sync()
+
+                        //////
+                        Logger.outputReadyEvent(logPhaseName, timer.read(), wc.getProperty(logPropertyName))
+                        //////
+
                         output.write(wc)
-                        Logger.outputEvent(logPhaseName, timer.read(), inputObject.getProperty(logPropertyName))
+
+                        //////
+                        Logger.outputCompleteEvent(logPhaseName, timer.read(), wc.getProperty(logPropertyName))
+                        //////
+
                         break
                     default:
                         break
